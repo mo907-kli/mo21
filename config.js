@@ -4,7 +4,7 @@
 
 const SystemConfig = {
     // بيانات تسجيل الدخول
-    username: "admin",        // اسم المستخدم
+    username: "Ahmed Alfahd",        // اسم المستخدم
     password: "123",            // كلمة المرور
 
     // بيانات الملف الشخصي (تظهر في الزاوية العلوية اليسرى)
@@ -38,4 +38,5 @@ const EnlistedRanks = [
     "Staff Sergeant", "First Sergeant", "Sergeant",
     "Senior Lead Officer", "Senior Officer", "Officer III",
     "Officer II", "Officer I", "Solo Cadet", "Cadet"
+
 ];
