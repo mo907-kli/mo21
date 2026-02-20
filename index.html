@@ -1,0 +1,640 @@
+﻿<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>إدارة الشرطة | L.S.P.D Command</title>
+    
+    <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@300;400;500;700;800&family=Rajdhani:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <style>
+        :root {
+            --bg-deep: #000205;
+            --glass-bg: rgba(5, 12, 25, 0.75);
+            --glass-border: rgba(0, 212, 255, 0.15);
+            --cyan: #00eaff;
+            --cyan-dim: rgba(0, 234, 255, 0.1);
+            --cyan-glow: rgba(0, 234, 255, 0.5);
+            --red: #ff2a2a;
+            --green: #00ff6a;
+            --yellow: #ffc107;
+            --text-main: #ffffff;
+            --text-muted: #8da2b5;
+            --font-ar: 'Tajawal', sans-serif;
+            --font-en: 'Rajdhani', sans-serif;
+        }
+
+        * { box-sizing: border-box; margin: 0; padding: 0; user-select: none; }
+        input, textarea, .crypto-res, .rec-item span, .task-table td { user-select: text !important; }
+
+        body {
+            background-color: var(--bg-deep); color: var(--text-main);
+            font-family: var(--font-ar); height: 100vh; overflow: hidden;
+            display: flex; flex-direction: column; position: relative;
+        }
+
+        /* --- Stars Background --- */
+        #star-bg { position: fixed; inset: 0; z-index: -2; background: radial-gradient(circle at bottom, #0a1525 0%, #000000 100%); }
+        .star { position: absolute; width: 2px; height: 2px; background: white; border-radius: 50%; animation: twinkle 5s infinite; opacity: 0; }
+        @keyframes twinkle { 0% { opacity: 0; transform: translateY(0); } 50% { opacity: 1; } 100% { opacity: 0; transform: translateY(-100px); } }
+
+        /* --- LSPD Logo Watermark --- */
+        .central-logo-bg {
+            position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%);
+            width: 550px; height: 550px; z-index: -1; opacity: 0.05; pointer-events: none;
+            background-image: url('yyW7oBx.jpg');
+            background-size: cover; background-position: center;
+            border-radius: 50%;
+            clip-path: circle(47% at 50% 50%);
+            animation: slowRotate 120s linear infinite;
+        }
+        @keyframes slowRotate { from { transform: translate(-50%, -50%) rotate(0deg); } to { transform: translate(-50%, -50%) rotate(360deg); } }
+        @keyframes slideUpFade { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+
+        /* --- Login Screen --- */
+        #loginScreen {
+            position: fixed; inset: 0; background: #000; z-index: 9999;
+            display: flex; justify-content: center; align-items: center;
+            background-image: radial-gradient(circle at center, #0a1829 0%, #000 100%);
+        }
+        .login-container {
+            position: relative; width: 450px; padding: 4px;
+            background: linear-gradient(180deg, var(--cyan), transparent, var(--cyan));
+            clip-path: polygon(0 0, 100% 0, 100% 85%, 90% 100%, 0 100%); animation: slideUpFade 1s ease-out;
+        }
+        .login-inner {
+            background: #02060c; padding: 50px 40px; clip-path: polygon(0 0, 100% 0, 100% 85%, 90% 100%, 0 100%);
+            text-align: center; position: relative;
+        }
+        
+        .login-logo {
+            width: 110px; height: 110px; margin: 0 auto 20px; display: block;
+            background-image: url('yyW7oBx.jpg'); background-size: cover; background-position: center;
+            border-radius: 50%; clip-path: circle(47% at 50% 50%);
+            box-shadow: 0 0 30px var(--cyan-glow); border: 2px solid var(--cyan);
+        }
+
+        .login-title { font-size: 1.8rem; color: #fff; letter-spacing: 2px; margin-bottom: 30px; font-weight: bold;}
+        .inp-group { position: relative; margin-bottom: 20px; }
+        .inp-group i { position: absolute; top: 50%; transform: translateY(-50%); color: var(--cyan); opacity: 0.7; }
+        [dir="rtl"] .inp-group i { right: 15px; } [dir="ltr"] .inp-group i { left: 15px; }
+
+        .login-input {
+            width: 100%; padding: 15px 45px; background: rgba(0, 234, 255, 0.05); border: 1px solid #1f2f40;
+            color: #fff; outline: none; font-size: 1rem; transition: 0.3s; font-family: 'Courier New', var(--font-ar);
+        }
+        .login-input:focus { border-color: var(--cyan); box-shadow: 0 0 10px var(--cyan-dim); background: rgba(0, 234, 255, 0.1); }
+        .login-btn {
+            width: 100%; padding: 15px; margin-top: 10px; background: var(--cyan); border: none; color: #000;
+            font-weight: bold; font-size: 1.1rem; letter-spacing: 1px;
+            cursor: pointer; transition: 0.3s; clip-path: polygon(0 0, 100% 0, 100% 70%, 95% 100%, 0 100%);
+        }
+        .login-btn:hover { background: #fff; box-shadow: 0 0 20px var(--cyan); }
+        .error-msg { color: var(--red); font-size: 0.9rem; margin-top: 15px; display: none; font-weight: bold; }
+
+        /* --- Header & Layout --- */
+        header {
+            display: flex; justify-content: space-between; align-items: center; padding: 15px 40px;
+            background: rgba(2, 6, 12, 0.8); backdrop-filter: blur(10px); border-bottom: 1px solid var(--glass-border); z-index: 10;
+        }
+        .h-tools { display: flex; gap: 12px; align-items: center; }
+        .lang-btn {
+            width: 40px; height: 40px; border: 1px solid var(--glass-border); display: flex; justify-content: center; align-items: center;
+            cursor: pointer; font-weight: bold; font-family: var(--font-en); color: var(--text-muted); transition: 0.3s;
+        }
+        .lang-btn:hover { border-color: var(--cyan); color: var(--cyan); background: var(--cyan-dim); }
+        .user-panel { display: flex; align-items: center; gap: 10px; border: 1px solid var(--glass-border); padding: 5px 20px; border-radius: 4px; background: rgba(0,0,0,0.3); }
+        
+        .logo-area { display: flex; align-items: center; gap: 15px; }
+        .header-logo {
+            width: 45px; height: 45px; border-radius: 50%;
+            background-image: url('yyW7oBx.jpg'); background-size: cover; background-position: center;
+            clip-path: circle(47% at 50% 50%); border: 1px solid var(--cyan); box-shadow: 0 0 10px var(--cyan-glow);
+        }
+        .logo-area h1 { font-size: 1.5rem; font-weight: 800; letter-spacing: 1px; color: #fff; }
+        .logo-area span { color: var(--cyan); }
+
+        /* --- Stats --- */
+        .stats-wrap { display: grid; grid-template-columns: repeat(4, 1fr); gap: 20px; padding: 25px 60px; z-index: 5; }
+        .stat-card {
+            background: var(--glass-bg); border: 1px solid var(--glass-border); padding: 20px;
+            display: flex; justify-content: space-between; align-items: center; border-radius: 6px;
+            backdrop-filter: blur(5px); animation: slideUpFade 0.5s ease-out forwards;
+        }
+        .stat-num { font-size: 2rem; font-weight: 800; color: #fff; }
+        .stat-label { font-size: 0.75rem; color: var(--text-muted); font-weight: bold; letter-spacing: 1px; }
+
+        /* --- Main Grid --- */
+        .main-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 15px; padding: 0 60px 40px; flex: 1; overflow-y: auto; z-index: 5; }
+        .main-grid::-webkit-scrollbar { width: 0; }
+        .card {
+            background: var(--glass-bg); border: 1px solid var(--glass-border); padding: 15px 25px;
+            display: flex; align-items: center; justify-content: space-between; cursor: pointer; border-radius: 6px; position: relative; overflow: hidden;
+            transition: 0.3s; animation: slideUpFade 0.5s ease-out forwards;
+        }
+        .card:hover { border-color: var(--cyan); transform: translateY(-3px); box-shadow: 0 5px 20px rgba(0,0,0,0.5); }
+        .card.red-zone:hover { border-color: var(--red); }
+
+        .c-val { font-size: 1.8rem; font-weight: 800; color: var(--cyan); min-width: 50px; }
+        .red-zone .c-val { color: var(--red); }
+        .c-info { flex: 1; margin: 0 20px; }
+        .c-info h4 { font-size: 1.1rem; font-weight: 600; margin-bottom: 3px; }
+        .c-info p { font-size: 0.7rem; color: var(--text-muted); }
+        .c-icon { font-size: 1.5rem; color: var(--cyan); opacity: 0.4; }
+        .red-zone .c-icon { color: var(--red); }
+
+        footer { height: 40px; background: #000; border-top: 1px solid var(--glass-border); display: flex; align-items: center; padding: 0 30px; font-size: 0.8rem; color: var(--text-muted); z-index: 10; }
+
+        /* --- Modals --- */
+        .modal-overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.9); backdrop-filter: blur(5px); display: none; justify-content: center; align-items: center; z-index: 5000; }
+        .modal-box { width: 650px; padding: 30px; background: #050b14; border: 1px solid var(--cyan); box-shadow: 0 0 50px rgba(0,0,0,0.8); animation: slideUpFade 0.3s ease-out; transition: width 0.3s; }
+        
+        .gen-input { width: 100%; padding: 10px; background: #000; border: 1px solid var(--glass-border); color: #fff; margin-bottom: 8px; outline: none; transition: 0.3s; font-family: var(--font-ar);}
+        .gen-input:focus { border-color: var(--cyan); }
+        
+        .file-input-wrapper { position: relative; margin-bottom: 8px; }
+        .file-input-wrapper input[type="file"] {
+            width: 100%; padding: 10px; background: rgba(0, 234, 255, 0.05); border: 1px dashed var(--cyan); color: var(--text-muted);
+            border-radius: 4px; cursor: pointer; transition: 0.3s; font-family: var(--font-ar);
+        }
+        
+        /* Table Styles */
+        .tasks-container { max-height: 250px; overflow-y: auto; margin-bottom: 15px; border: 1px solid var(--glass-border); }
+        .task-table { width: 100%; border-collapse: collapse; font-size: 0.85rem; text-align: center; }
+        .task-table th { background: var(--cyan-dim); color: var(--cyan); padding: 10px; border: 1px solid var(--glass-border); font-weight: bold; position: sticky; top: 0;}
+        .task-table td { padding: 8px; border: 1px solid var(--glass-border); color: #ddd; vertical-align: middle;}
+        
+        .status-badge { padding: 4px 8px; border-radius: 4px; font-size: 0.7rem; font-weight: bold; }
+        .badge-pending { background: rgba(255, 193, 7, 0.15); border: 1px solid var(--yellow); color: var(--yellow); }
+        .badge-approved { background: rgba(0, 255, 106, 0.15); border: 1px solid var(--green); color: var(--green); }
+        
+        .action-icon { cursor: pointer; margin: 0 5px; font-size: 1rem; transition: 0.2s; opacity: 0.8;}
+        .action-icon:hover { transform: scale(1.2); opacity: 1; }
+        .icon-del { color: var(--red); }
+
+        /* Standard List */
+        .rec-list { max-height: 280px; overflow-y: auto; margin-bottom: 15px; border-bottom: 1px solid #111; padding-right: 5px; }
+        .rec-list::-webkit-scrollbar { width: 4px; }
+        .rec-list::-webkit-scrollbar-thumb { background: var(--cyan); }
+        .rec-item { padding: 12px; border-bottom: 1px solid #111; display: flex; justify-content: space-between; align-items: flex-start; color: #ddd; font-size: 0.9rem; }
+        
+        /* Buttons */
+        .modal-btn { width: 100%; padding: 12px; background: var(--cyan); border: none; font-weight: bold; cursor: pointer; margin-top: 10px; transition: 0.3s;}
+        .modal-btn:hover { background: #fff; color: #000; }
+        .close-btn { width: 100%; background: transparent; border: 1px solid #333; color: #888; padding: 10px; margin-top: 5px; cursor: pointer; }
+        .close-btn:hover { border-color: var(--red); color: var(--red); }
+        
+        /* Video & Crypto Grid */
+        .video-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 15px; max-height: 350px; overflow-y: auto; }
+        .video-card { background: rgba(0, 0, 0, 0.6); border: 1px solid var(--glass-border); border-radius: 8px; padding: 10px; position: relative; }
+        .video-card-title { color: var(--cyan); font-weight: bold; font-size: 0.85rem; margin-bottom: 10px; text-align: center; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+        .video-player { width: 100%; aspect-ratio: 16/9; background: #000; border-radius: 4px; border: 1px solid #111; }
+        .del-video-btn { position: absolute; top: -10px; left: -10px; background: var(--red); color: #fff; border: none; border-radius: 50%; width: 25px; height: 25px; cursor: pointer; display: flex; justify-content: center; align-items: center; opacity: 0; transition: 0.3s; z-index: 10; }
+        .video-card:hover .del-video-btn { opacity: 1; }
+
+        .crypto-area textarea { width: 100%; height: 100px; background: #000; border: 1px solid var(--glass-border); color: var(--cyan); padding: 10px; margin-bottom: 10px; outline: none; font-family: monospace; }
+        .crypto-res-wrapper { position: relative; margin-top: 10px; }
+        .crypto-res { background: #000; border: 1px solid var(--glass-border); padding: 15px; color: #fff; min-height: 50px; font-family: monospace; word-break: break-all; padding-inline-end: 40px; }
+        
+        .grid-inputs-tasks { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-bottom: 8px; }
+        .full-width { grid-column: 1 / -1; }
+    </style>
+</head>
+<body id="appBody">
+
+    <div id="star-bg"></div>
+    <script>
+        const starContainer = document.getElementById('star-bg');
+        for(let i=0; i<60; i++) {
+            const star = document.createElement('div');
+            star.className = 'star';
+            star.style.left = Math.random() * 100 + '%';
+            star.style.top = Math.random() * 100 + '%';
+            star.style.animationDuration = (Math.random() * 3 + 2) + 's';
+            starContainer.appendChild(star);
+        }
+    </script>
+    
+    <div class="central-logo-bg"></div>
+
+    <div id="loginScreen">
+        <div class="login-container">
+            <div class="login-inner">
+                <div class="login-logo"></div>
+                <div class="login-title" data-i18n="login_title">نظام إدارة الشرطة</div>
+                
+                <div class="inp-group">
+                    <i class="fa-solid fa-id-card"></i>
+                    <input type="text" id="userInput" class="login-input" data-i18n-ph="login_ph_id" placeholder="رقم الهوية" autocomplete="off">
+                </div>
+                <div class="inp-group">
+                    <i class="fa-solid fa-key"></i>
+                    <input type="password" id="passInput" class="login-input" data-i18n-ph="login_ph_pass" placeholder="رمز الوصول" autocomplete="off">
+                </div>
+
+                <button class="login-btn" onclick="login()" data-i18n="login_btn">تهيئة الدخول</button>
+                <div class="error-msg" id="loginError" data-i18n="login_err">صلاحية الدخول مرفوضة</div>
+            </div>
+        </div>
+    </div>
+
+    <div id="mainContent" style="display:none; height: 100%; flex-direction: column;">
+        <header>
+            <div class="h-tools">
+                <div class="lang-btn" onclick="toggleLang()" id="langToggle">EN</div>
+                <div class="user-panel">
+                    <span id="rankDisp" style="color:var(--cyan); font-size:0.75rem; font-weight:bold; border-inline-end:1px solid #333; padding-inline-end:10px;"></span>
+                    <span id="nameDisp" style="font-size:0.9rem; font-weight:bold;"></span>
+                </div>
+                <div style="font-size:0.75rem; color:var(--green); font-weight:bold; letter-spacing:1px; margin-inline-start:10px;">
+                    <i class="fa-solid fa-circle" style="font-size:0.5rem"></i> <span data-i18n="status_online">متصل</span>
+                </div>
+            </div>
+            
+            <div class="logo-area">
+                <div class="header-logo"></div>
+                <h1 data-i18n="app_title">إدارة <span>الشرطة</span></h1>
+            </div>
+        </header>
+
+        <div class="stats-wrap">
+            <div class="stat-card">
+                <div><div class="stat-num" style="color:var(--cyan)">100%</div><div class="stat-label" data-i18n="st_sys">سلامة النظام</div></div>
+                <i class="fa-solid fa-shield-halved" style="font-size:2rem; opacity:0.3; color:var(--cyan)"></i>
+            </div>
+            <div class="stat-card">
+                <div><div class="stat-num" id="stat-ops">0</div><div class="stat-label" data-i18n="st_ops">العمليات النشطة</div></div>
+                <i class="fa-solid fa-server" style="font-size:2rem; opacity:0.3; color:var(--cyan)"></i>
+            </div>
+            <div class="stat-card">
+                <div><div class="stat-num" id="stat-reps">0</div><div class="stat-label" data-i18n="st_rep">التقارير</div></div>
+                <i class="fa-solid fa-file-contract" style="font-size:2rem; opacity:0.3; color:var(--cyan)"></i>
+            </div>
+            <div class="stat-card">
+                <div><div class="stat-num" id="stat-usr">0</div><div class="stat-label" data-i18n="st_usr">الأفراد النشطون</div></div>
+                <i class="fa-solid fa-users" style="font-size:2rem; opacity:0.3; color:var(--cyan)"></i>
+            </div>
+        </div>
+
+        <div class="main-grid" id="modulesContainer"></div>
+
+        <footer>
+            <span style="color:var(--red); font-weight:bold; letter-spacing:1px;" data-i18n="foot_alert">● تنبيه: المراقبة نشطة</span>
+            <span style="margin-inline-start:auto;" data-i18n="foot_sys">منظومة إدارة الشرطة v5.0</span>
+        </footer>
+    </div>
+
+    <div class="modal-overlay" id="cryptoModal">
+        <div class="modal-box">
+            <h3 style="color:var(--cyan); margin-bottom:15px;" data-i18n="cryp_title">قسم التشفير</h3>
+            <div class="crypto-area">
+                <textarea id="cryIn" data-i18n-ph="cryp_ph" placeholder="أدخل النص..." autocomplete="off"></textarea>
+                <div style="display:flex; gap:10px; margin-bottom:15px;">
+                    <button class="modal-btn" onclick="doCrypto('enc')" style="margin:0" data-i18n="cryp_btn_enc">تشفير</button>
+                    <button class="modal-btn" onclick="doCrypto('dec')" style="margin:0; background:#fff; color:#000;" data-i18n="cryp_btn_dec">فك تشفير</button>
+                </div>
+                <div class="crypto-res-wrapper">
+                    <div class="crypto-res" id="cryOut"></div>
+                    <button class="copy-btn" onclick="copyCrypto()" id="copyBtn" style="position: absolute; top: 50%; transform: translateY(-50%); inset-inline-end: 8px; background: var(--cyan-dim); border: 1px solid var(--cyan); color: var(--cyan); width: 30px; height: 30px; border-radius: 4px; cursor: pointer;"><i class="fa-solid fa-copy"></i></button>
+                </div>
+            </div>
+            <button class="close-btn" onclick="closeModals()" data-i18n="btn_close">إغلاق</button>
+        </div>
+    </div>
+
+    <div class="modal-overlay" id="dataModal">
+        <div class="modal-box" id="dataModalBox">
+            <h3 id="mDataTitle" style="color:var(--cyan); margin-bottom:15px; border-bottom:1px solid var(--glass-border); padding-bottom:10px;">--</h3>
+            <div id="dynamicContentArea"></div>
+            <div id="mInputs"></div>
+            <button class="modal-btn" id="submitBtn" onclick="addRecord()" data-i18n="btn_add">إضافة / حفظ السجل</button>
+            <button class="close-btn" onclick="closeModals()" data-i18n="btn_close">إغلاق النافذة</button>
+        </div>
+    </div>
+
+    <script src="config.js"></script>
+    <script>
+        // --- Translations ---
+        const i18n = {
+            ar: {
+                login_title: "نظام إدارة الشرطة", login_ph_id: "رقم الهوية", login_ph_pass: "رمز الوصول", login_btn: "تهيئة الدخول", login_err: "صلاحية الدخول مرفوضة",
+                status_online: "متصل", app_title: "إدارة <span>الشرطة</span>",
+                st_sys: "سلامة النظام", st_ops: "العمليات النشطة", st_rep: "إجمالي التقارير", st_usr: "الأفراد النشطون",
+                foot_alert: "● تنبيه: المراقبة نشطة", foot_sys: "منظومة إدارة الشرطة v5.0",
+                cryp_title: "قسم التشفير", cryp_ph: "أدخل النص...", cryp_btn_enc: "تشفير النص", cryp_btn_dec: "فك التشفير",
+                btn_add: "إضافة / حفظ السجل", btn_close: "إغلاق النافذة",
+                th_officer: "المسؤول", th_assignee: "المستلم", th_pts: "النقاط", th_reason: "السبب/المهمة", th_status: "الحالة", th_act: "إجراء",
+                st_pend: "قيد الانتظار", st_appr: "معتمدة ✔️",
+                m_rep: "التقارير", m_rep_s: "تقارير شاملة ومفصلة",
+                m_cry: "قسم التشفير", m_cry_s: "AES-256 / RSA",
+                m_box: "الصندوق الأسود", m_box_s: "أرشيف مشفر",
+                m_sav: "التقارير المحفوظة", m_sav_s: "سري للغاية",
+                m_not: "ملاحظات القيادة", m_not_s: "توجيهات عليا",
+                m_map: "خرائط العمليات", m_map_s: "تتبع جغرافي مع صور",
+                m_off: "المسؤولون", m_off_s: "سلسلة القيادة",
+                m_wan: "المطلوبون", m_wan_s: "أهداف ذات أولوية",
+                m_tsk: "المهام والنقاط", m_tsk_s: "جدول المهام الميدانية",
+                m_gng: "قسم العصابات", m_gng_s: "شبكات إجرامية",
+                m_vid: "قسم الفيديو", m_vid_s: "مراقبة حية",
+                m_arm: "مستودع الأسلحة", m_arm_s: "العهد والذخائر",
+                v_title: "عنوان الفيديو", v_yt: "رابط يوتيوب", v_or: "أو ملف", v_err: "أدخل العنوان ورابط أو ملف",
+                r_name: "اسمك الكامل", r_badge: "البادج العسكري", r_crim: "اسم المجرم", r_det: "اكتب التقرير بالكامل هنا (مساحة كبيرة)..." // تم إزالة MDT هنا
+            },
+            en: {
+                login_title: "SYSTEM LOGIN", login_ph_id: "ID NUMBER", login_ph_pass: "ACCESS CODE", login_btn: "INITIALIZE", login_err: "UNAUTHORIZED ACCESS",
+                status_online: "ONLINE", app_title: "POLICE <span>DEPT</span>",
+                st_sys: "SYSTEM INTEGRITY", st_ops: "ACTIVE OPS", st_rep: "TOTAL REPORTS", st_usr: "ACTIVE PERSONNEL",
+                foot_alert: "● ALERT: SURVEILLANCE ACTIVE", foot_sys: "POLICE DEPT SYSTEM V5.0",
+                cryp_title: "CRYPTO DEPT", cryp_ph: "INPUT TEXT...", cryp_btn_enc: "ENCRYPT", cryp_btn_dec: "DECRYPT",
+                btn_add: "SUBMIT RECORD", btn_close: "CLOSE WINDOW",
+                th_officer: "Officer", th_assignee: "Assignee", th_pts: "Points", th_reason: "Reason/Task", th_status: "Status", th_act: "Actions",
+                st_pend: "Pending", st_appr: "Approved ✔️",
+                m_rep: "REPORTS", m_rep_s: "DETAILED INCIDENTS",
+                m_cry: "CRYPTO DEPT", m_cry_s: "AES-256 / RSA",
+                m_box: "BLACK BOX", m_box_s: "ENCRYPTED ARCHIVE",
+                m_sav: "SAVED REPORTS", m_sav_s: "TOP SECRET",
+                m_not: "COMMAND NOTES", m_not_s: "DIRECTIVES",
+                m_map: "OPS MAPS", m_map_s: "GEO TRACKING & IMAGES",
+                m_off: "OFFICIALS", m_off_s: "COMMAND CHAIN",
+                m_wan: "WANTED", m_wan_s: "HIGH PRIORITY",
+                m_tsk: "TASKS & POINTS", m_tsk_s: "FIELD SCHEDULE",
+                m_gng: "GANGS", m_gng_s: "CRIMINAL NETWORKS",
+                m_vid: "VIDEO DEPT", m_vid_s: "LIVE FEED",
+                m_arm: "ARMORY DEPT", m_arm_s: "WEAPONS & AMMO",
+                v_title: "Video Title", v_yt: "YouTube Link", v_or: "OR File", v_err: "Enter Title and URL or File",
+                r_name: "Full Name", r_badge: "Military Badge", r_crim: "Criminal Name", r_det: "Type the full report here (expandable)..." // Removed MDT
+            }
+        };
+
+        const modules = [
+            { id: 'reports', i18n_t: 'm_rep', i18n_s: 'm_rep_s', icon: 'fa-file-lines', red: false, isReportForm: true },
+            { id: 'crypto', i18n_t: 'm_cry', i18n_s: 'm_cry_s', icon: 'fa-fingerprint', red: false, isCrypto: true },
+            { id: 'blackbox', i18n_t: 'm_box', i18n_s: 'm_box_s', icon: 'fa-server', red: false, inputsAr: ['رقم السجل', 'كود الوصول'], inputsEn: ['Record ID', 'Access Code'] },
+            { id: 'saved', i18n_t: 'm_sav', i18n_s: 'm_sav_s', icon: 'fa-shield-virus', red: false, inputsAr: ['رقم التقرير', 'التصنيف'], inputsEn: ['Report ID', 'Class'] },
+            { id: 'notes', i18n_t: 'm_not', i18n_s: 'm_not_s', icon: 'fa-bullhorn', red: false, inputsAr: ['الموضوع', 'النص'], inputsEn: ['Subject', 'Body'] },
+            { id: 'maps', i18n_t: 'm_map', i18n_s: 'm_map_s', icon: 'fa-map-location-dot', red: false, hasImage: true, inputsAr: ['الإحداثيات', 'المنطقة'], inputsEn: ['Coords', 'Zone'] },
+            { id: 'officials', i18n_t: 'm_off', i18n_s: 'm_off_s', icon: 'fa-user-tie', red: false, inputsAr: ['الاسم', 'الرتبة'], inputsEn: ['Name', 'Rank'] },
+            { id: 'wanted', i18n_t: 'm_wan', i18n_s: 'm_wan_s', icon: 'fa-skull', red: true, inputsAr: ['اسم الهدف', 'التهمة', 'الخطورة'], inputsEn: ['Name', 'Crime', 'Risk'] },
+            { id: 'tasks', i18n_t: 'm_tsk', i18n_s: 'm_tsk_s', icon: 'fa-crosshairs', red: false, isTable: true },
+            { id: 'gangs', i18n_t: 'm_gng', i18n_s: 'm_gng_s', icon: 'fa-mask', red: true, inputsAr: ['الاسم', 'النشاط'], inputsEn: ['Name', 'Activity'] },
+            { id: 'video', i18n_t: 'm_vid', i18n_s: 'm_vid_s', icon: 'fa-video', red: false, isVideo: true },
+            { id: 'armory', i18n_t: 'm_arm', i18n_s: 'm_arm_s', icon: 'fa-gun', red: false, inputsAr: ['نوع السلاح', 'الرقم التسلسلي', 'المستلم'], inputsEn: ['Weapon Type', 'Serial No', 'Assignee'] }
+        ];
+
+        let currentLang = 'ar';
+        let isOfficer = false; let isHighCommand = false; 
+        let currentModule = null; let editingTaskIndex = -1;
+        let db = {}; modules.forEach(m => db[m.id] = []);
+
+        window.onload = () => { applyLanguage(); };
+
+        function applyLanguage() {
+            document.querySelectorAll('[data-i18n]').forEach(el => { if(i18n[currentLang][el.getAttribute('data-i18n')]) el.innerHTML = i18n[currentLang][el.getAttribute('data-i18n')]; });
+            document.querySelectorAll('[data-i18n-ph]').forEach(el => { if(i18n[currentLang][el.getAttribute('data-i18n-ph')]) el.placeholder = i18n[currentLang][el.getAttribute('data-i18n-ph')]; });
+            document.getElementById('appBody').setAttribute('dir', currentLang === 'ar' ? 'rtl' : 'ltr');
+            document.getElementById('appBody').style.fontFamily = currentLang === 'ar' ? 'var(--font-ar)' : 'var(--font-en)';
+            document.getElementById('langToggle').innerText = currentLang === 'ar' ? 'EN' : 'عربي';
+        }
+
+        function toggleLang() { currentLang = currentLang === 'ar' ? 'en' : 'ar'; applyLanguage(); renderModules(); if(currentModule) openMod(currentModule.id); }
+
+        function login() {
+            const u = document.getElementById('userInput').value, p = document.getElementById('passInput').value;
+            if(typeof SystemConfig !== 'undefined' && u === SystemConfig.username && p === SystemConfig.password) {
+                const ls = document.getElementById('loginScreen'); ls.style.opacity = '0';
+                setTimeout(() => {
+                    ls.style.display = 'none'; document.getElementById('mainContent').style.display = 'flex';
+                    document.getElementById('nameDisp').innerText = SystemConfig.fullName; document.getElementById('rankDisp').innerText = SystemConfig.rank;
+                    if(typeof OfficerRanks !== 'undefined') {
+                        const r = OfficerRanks.indexOf(SystemConfig.rank);
+                        if(r !== -1) { isOfficer = true; if(r >= 0 && r <= 8) isHighCommand = true; }
+                    }
+                    renderModules();
+                }, 500);
+            } else { document.getElementById('loginError').style.display = 'block'; }
+        }
+
+        function renderModules() {
+            const c = document.getElementById('modulesContainer'); c.innerHTML = ''; 
+            modules.forEach((m, idx) => {
+                const cnt = db[m.id].length;
+                c.innerHTML += `
+                    <div class="card ${m.red ? 'red-zone' : ''}" onclick="openMod('${m.id}')" style="animation-delay:${idx*0.05}s">
+                        <div class="c-val" id="cnt-${m.id}">${cnt}</div>
+                        <div class="c-info"><h4>${i18n[currentLang][m.i18n_t]}</h4><p>${i18n[currentLang][m.i18n_s]}</p></div>
+                        <div class="c-icon"><i class="fa-solid ${m.icon}"></i></div>
+                    </div>`;
+            });
+        }
+
+        function openMod(id) {
+            currentModule = modules.find(m => m.id === id);
+            if(currentModule.isCrypto) { document.getElementById('cryptoModal').style.display = 'flex'; return; }
+            
+            const modalBox = document.getElementById('dataModalBox');
+            modalBox.style.width = currentModule.isVideo ? '850px' : (currentModule.isReportForm ? '750px' : '650px');
+            document.getElementById('dataModal').style.display = 'flex';
+            document.getElementById('mDataTitle').innerText = i18n[currentLang][currentModule.i18n_t];
+            
+            const dynamicArea = document.getElementById('dynamicContentArea'), inpArea = document.getElementById('mInputs'), submitBtn = document.getElementById('submitBtn');
+            
+            if(currentModule.isReportForm) {
+                dynamicArea.innerHTML = `<div class="rec-list" id="mList"></div>`;
+                if(isOfficer) {
+                    submitBtn.style.display = 'block';
+                    const t = i18n[currentLang];
+                    
+                    // تم إزالة حقل MDT وتعديل التصميم ليتناسب مع 3 حقول فقط
+                    inpArea.innerHTML = `
+                        <div class="grid-inputs-tasks">
+                            <input type="text" id="r-name" class="gen-input" placeholder="${t.r_name}">
+                            <input type="text" id="r-badge" class="gen-input" placeholder="${t.r_badge}">
+                        </div>
+                        <input type="text" id="r-crim" class="gen-input" placeholder="${t.r_crim}" style="width:100%; margin-bottom:8px;">
+                        
+                        <textarea id="r-details" class="gen-input full-width" placeholder="${t.r_det}" style="height:120px; resize:vertical; line-height:1.5;"></textarea>
+                        <div class="file-input-wrapper">
+                            <input type="file" id="r-image" accept="image/*">
+                        </div>
+                    `;
+                } else { submitBtn.style.display = 'none'; inpArea.innerHTML = ''; }
+                renderRecords();
+                
+            } else if(currentModule.isVideo) {
+                dynamicArea.innerHTML = `<div class="video-grid" id="videoGridContainer"></div>`;
+                if(isOfficer) {
+                    submitBtn.style.display = 'block'; const t = i18n[currentLang];
+                    inpArea.innerHTML = `
+                        <input type="text" id="v-title" class="gen-input" placeholder="${t.v_title}">
+                        <div style="display:flex; gap:10px; align-items:center;">
+                            <input type="text" id="v-yt" class="gen-input" placeholder="${t.v_yt}" style="flex:1; margin-bottom:0;">
+                            <span style="color:var(--text-muted); font-size:0.8rem; white-space:nowrap;">- ${t.v_or} -</span>
+                            <div class="file-input-wrapper" style="flex:1; margin-bottom:0;"><input type="file" id="v-file" accept="video/mp4,video/*"></div>
+                        </div>`;
+                } else { submitBtn.style.display = 'none'; inpArea.innerHTML = ''; }
+                renderVideoGrid();
+            } else if(currentModule.isTable) {
+                dynamicArea.innerHTML = `<div class="tasks-container" id="tasksTableContainer"></div>`;
+                if(isOfficer) {
+                    submitBtn.style.display = 'block'; const t = i18n[currentLang];
+                    inpArea.innerHTML = `
+                        <div class="grid-inputs-tasks">
+                            <input type="text" id="t-officer" class="gen-input" placeholder="${t.th_officer}">
+                            <input type="text" id="t-assignee" class="gen-input" placeholder="${t.th_assignee}">
+                            <input type="number" id="t-pts" class="gen-input" placeholder="${t.th_pts}">
+                            <input type="text" id="t-reason" class="gen-input full-width" placeholder="${t.th_reason}">
+                        </div>`;
+                } else { submitBtn.style.display = 'none'; inpArea.innerHTML = ''; }
+                renderTasksTable();
+            } else {
+                submitBtn.style.display = 'block'; dynamicArea.innerHTML = `<div class="rec-list" id="mList"></div>`; inpArea.innerHTML = '';
+                const arr = currentLang === 'ar' ? currentModule.inputsAr : currentModule.inputsEn;
+                arr.forEach((ph, i) => { inpArea.innerHTML += `<input type="text" id="inp-${i}" class="gen-input" placeholder="${ph}" autocomplete="off">`; });
+                if(currentModule.hasImage) inpArea.innerHTML += `<div class="file-input-wrapper"><input type="file" id="inp-image" accept="image/*"></div>`;
+                renderRecords();
+            }
+        }
+
+        function closeModals() { document.getElementById('cryptoModal').style.display = 'none'; document.getElementById('dataModal').style.display = 'none'; }
+
+        function renderVideoGrid() {
+            const container = document.getElementById('videoGridContainer'); if(!container) return;
+            let html = '';
+            db['video'].forEach((vid, idx) => {
+                const media = vid.type === 'yt' ? `<iframe class="video-player" src="${vid.url}" frameborder="0" allowfullscreen></iframe>` : `<video class="video-player" src="${vid.url}" controls></video>`;
+                const delBtn = isOfficer ? `<button class="del-video-btn" onclick="delRec(${idx})"><i class="fa-solid fa-trash"></i></button>` : '';
+                html += `<div class="video-card">${delBtn}<div class="video-card-title" title="${vid.title}">${vid.title}</div>${media}</div>`;
+            });
+            container.innerHTML = html;
+        }
+
+        function renderTasksTable() {
+            const container = document.getElementById('tasksTableContainer'); if(!container) return;
+            const t = i18n[currentLang];
+            let html = `<table class="task-table"><thead><tr><th>${t.th_officer}</th><th>${t.th_assignee}</th><th>${t.th_pts}</th><th>${t.th_reason}</th><th>${t.th_status}</th>${isOfficer ? `<th>${t.th_act}</th>` : ''}</tr></thead><tbody>`;
+            db['tasks'].forEach((task, idx) => {
+                const badge = task.approved ? `<span class="status-badge badge-approved">${t.st_appr}</span>` : `<span class="status-badge badge-pending">${t.st_pend}</span>`;
+                let acts = '';
+                if(isOfficer) {
+                    acts += `<i class="fa-solid fa-trash action-icon icon-del" onclick="delRec(${idx})"></i>`;
+                    if(isHighCommand && !task.approved) acts += `<i class="fa-solid fa-check-circle action-icon icon-check" onclick="approveTask(${idx})"></i>`;
+                }
+                html += `<tr><td>${task.officer}</td><td>${task.assignee}</td><td style="color:var(--cyan);font-weight:bold;">${task.points}</td><td>${task.reason}</td><td>${badge}</td>${isOfficer ? `<td>${acts}</td>` : ''}</tr>`;
+            });
+            html += `</tbody></table>`; container.innerHTML = html;
+        }
+
+        function renderRecords() {
+            const list = document.getElementById('mList'); if(!list) return;
+            list.innerHTML = '';
+            db[currentModule.id].forEach((rec, idx) => {
+                const del = isOfficer ? `<div style="display:flex; align-items:flex-start; margin-inline-start:10px;"><i class="fa-solid fa-trash action-icon icon-del" onclick="delRec(${idx})"></i></div>` : '';
+                list.innerHTML += `<div class="rec-item"><div style="flex:1; display:flex; flex-direction:column; justify-content:center;">${rec}</div>${del}</div>`;
+            });
+        }
+
+        function addRecord() {
+            if(currentModule.isReportForm) {
+                if(!isOfficer) return;
+                
+                // تم إزالة متغير m الخاص بالـ MDT
+                const n = document.getElementById('r-name').value, b = document.getElementById('r-badge').value, c = document.getElementById('r-crim').value, d = document.getElementById('r-details').value;
+                const fileInput = document.getElementById('r-image');
+                
+                if(!n || !b || !c || !d) { alert(currentLang === 'ar' ? 'يرجى تعبئة الحقول الأساسية للتقرير' : 'Please fill core report fields'); return; }
+
+                const processReport = (imgSrc) => {
+                    const imgHtml = imgSrc ? `<img src="${imgSrc}" style="width:120px; border-radius:4px; margin-top:10px; cursor:zoom-in; border:1px solid var(--cyan);" onclick="window.open('${imgSrc}')">` : '';
+                    
+                    // تم إزالة جزء رابط MDT من العرض
+                    const html = `
+                        <div style="width:100%; text-align:start; padding:5px;">
+                            <div style="font-size:1.1rem; font-weight:bold; color:var(--yellow); margin-bottom:5px;">[${b}] ${n} <span style="color:#666; font-size:0.9rem; margin:0 10px;">ضد</span> <i class="fa-solid fa-handcuffs" style="color:var(--red);"></i> ${c}</div>
+                            <div style="font-size:0.85rem; color:#ddd; white-space:pre-wrap; background:rgba(0,0,0,0.4); padding:10px; border-radius:4px; border:1px solid #222; line-height:1.6; margin-top:10px;">${d}</div>
+                            ${imgHtml}
+                        </div>`;
+                    db['reports'].push(html);
+                    document.getElementById('cnt-reports').innerText = db['reports'].length;
+                    
+                    // تم إزالة حقل r-mdt من عملية التصفير
+                    ['r-name','r-badge','r-crim','r-details'].forEach(id => document.getElementById(id).value = '');
+                    if(fileInput) fileInput.value = '';
+                    renderRecords(); updateStats();
+                };
+
+                if (fileInput && fileInput.files && fileInput.files[0]) {
+                    const r = new FileReader(); r.onload = e => processReport(e.target.result); r.readAsDataURL(fileInput.files[0]);
+                } else processReport(null);
+                
+            } else if(currentModule.isVideo) {
+                if(!isOfficer) return;
+                const t = document.getElementById('v-title').value, yt = document.getElementById('v-yt').value, fileIn = document.getElementById('v-file');
+                if(!t) { alert(i18n[currentLang]['v_err']); return; }
+                if(yt) {
+                    const ytid = (yt.match(/^(?:https?:\/\/)?(?:www\.)?(?:youtu\.be\/|youtube\.com\/(?:embed\/|v\/|watch\?v=|watch\?.+&v=))((\w|-){11})(?:\S+)?$/)) ? RegExp.$1 : false;
+                    if(ytid) db['video'].push({ type: 'yt', url: `https://www.youtube.com/embed/${ytid}`, title: t }); else { alert('Invalid Link'); return; }
+                } else if(fileIn.files && fileIn.files[0]) db['video'].push({ type: 'local', url: URL.createObjectURL(fileIn.files[0]), title: t });
+                else { alert(i18n[currentLang]['v_err']); return; }
+                
+                document.getElementById(`cnt-video`).innerText = db['video'].length;
+                ['v-title', 'v-yt'].forEach(id => document.getElementById(id).value = ''); fileIn.value = '';
+                renderVideoGrid(); updateStats();
+                
+            } else if(currentModule.isTable) {
+                if(!isOfficer) return;
+                const o = document.getElementById('t-officer').value, a = document.getElementById('t-assignee').value, p = document.getElementById('t-pts').value, r = document.getElementById('t-reason').value;
+                if(!o || !a || !p || !r) return;
+                db['tasks'].push({ officer: o, assignee: a, points: p, reason: r, approved: false });
+                ['t-officer','t-assignee','t-pts','t-reason'].forEach(id => document.getElementById(id).value = '');
+                document.getElementById(`cnt-tasks`).innerText = db['tasks'].length; renderTasksTable(); updateStats();
+                
+            } else {
+                let vals = [], empty = false;
+                const arr = currentLang === 'ar' ? currentModule.inputsAr : currentModule.inputsEn;
+                arr.forEach((_, i) => { const v = document.getElementById(`inp-${i}`).value; if(!v) empty = true; vals.push(v); });
+                if(empty) return;
+                
+                if(currentModule.hasImage) {
+                    const fileInput = document.getElementById('inp-image');
+                    if(!fileInput.files || !fileInput.files[0]) { alert('Please upload image'); return; }
+                    const reader = new FileReader();
+                    reader.onload = function(e) {
+                        const imgHtml = `<img src="${e.target.result}" style="width:65px; height:65px; object-fit:cover; border-radius:4px; border:1px solid var(--cyan); cursor:zoom-in;" onclick="window.open('${e.target.result}')">`;
+                        const infoHtml = `<div style="margin-inline-start:15px; line-height:1.4;"><div style="color:var(--cyan); font-weight:bold; font-size:1rem;">${vals[1]}</div><div style="font-size:0.75rem; color:var(--text-muted);"><i class="fa-solid fa-location-crosshairs"></i> ${vals[0]}</div></div>`;
+                        db[currentModule.id].push(`<div style="display:flex; align-items:center;">${imgHtml} ${infoHtml}</div>`);
+                        document.getElementById(`cnt-${currentModule.id}`).innerText = db[currentModule.id].length;
+                        arr.forEach((_, i) => document.getElementById(`inp-${i}`).value = ''); fileInput.value = '';
+                        renderRecords(); updateStats();
+                    }; reader.readAsDataURL(fileInput.files[0]);
+                } else {
+                    db[currentModule.id].push(vals.join(' <span style="color:var(--cyan); margin:0 5px;">|</span> '));
+                    document.getElementById(`cnt-${currentModule.id}`).innerText = db[currentModule.id].length;
+                    arr.forEach((_, i) => document.getElementById(`inp-${i}`).value = '');
+                    renderRecords(); updateStats();
+                }
+            }
+        }
+
+        function delRec(idx) { 
+            db[currentModule.id].splice(idx, 1); 
+            document.getElementById(`cnt-${currentModule.id}`).innerText = db[currentModule.id].length; 
+            if(currentModule.isVideo) renderVideoGrid(); else if(currentModule.isTable) renderTasksTable(); else renderRecords();
+            updateStats(); 
+        }
+        function approveTask(idx) { if(!isHighCommand) return; db['tasks'][idx].approved = true; renderTasksTable(); }
+
+        function doCrypto(type) {
+            const v = document.getElementById('cryIn').value, out = document.getElementById('cryOut'); if(!v) return;
+            try { out.innerText = (type === 'enc') ? btoa(unescape(encodeURIComponent(v))) : decodeURIComponent(escape(atob(v))); } 
+            catch(e) { out.innerText = "Error"; }
+        }
+
+        function updateStats() {
+            document.getElementById('stat-ops').innerText = db.wanted.length + db.gangs.length + db.tasks.length;
+            document.getElementById('stat-reps').innerText = db.reports.length + db.saved.length + db.armory.length;
+            document.getElementById('stat-usr').innerText = db.officials.length;
+        }
+    </script>
+</body>
+</html>
