@@ -1,4 +1,4 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="ar" dir="rtl">
 <head>
     <meta charset="UTF-8">
@@ -26,7 +26,7 @@
         }
 
         * { box-sizing: border-box; margin: 0; padding: 0; user-select: none; }
-        input, textarea, .crypto-res, .rec-item span, .task-table td { user-select: text !important; }
+        input, textarea, select, .crypto-res, .rec-item span, .task-table td { user-select: text !important; }
 
         body {
             background-color: var(--bg-deep); color: var(--text-main);
@@ -34,12 +34,10 @@
             display: flex; flex-direction: column; position: relative;
         }
 
-        /* --- Stars Background --- */
         #star-bg { position: fixed; inset: 0; z-index: -2; background: radial-gradient(circle at bottom, #0a1525 0%, #000000 100%); }
         .star { position: absolute; width: 2px; height: 2px; background: white; border-radius: 50%; animation: twinkle 5s infinite; opacity: 0; }
         @keyframes twinkle { 0% { opacity: 0; transform: translateY(0); } 50% { opacity: 1; } 100% { opacity: 0; transform: translateY(-100px); } }
 
-        /* --- LSPD Logo Watermark --- */
         .central-logo-bg {
             position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%);
             width: 550px; height: 550px; z-index: -1; opacity: 0.05; pointer-events: none;
@@ -57,6 +55,7 @@
             position: fixed; inset: 0; background: #000; z-index: 9999;
             display: flex; justify-content: center; align-items: center;
             background-image: radial-gradient(circle at center, #0a1829 0%, #000 100%);
+            transition: opacity 0.5s ease;
         }
         .login-container {
             position: relative; width: 450px; padding: 4px;
@@ -67,7 +66,6 @@
             background: #02060c; padding: 50px 40px; clip-path: polygon(0 0, 100% 0, 100% 85%, 90% 100%, 0 100%);
             text-align: center; position: relative;
         }
-        
         .login-logo {
             width: 110px; height: 110px; margin: 0 auto 20px; display: block;
             background-image: url('yyW7oBx.jpg'); background-size: cover; background-position: center;
@@ -94,14 +92,26 @@
         .error-msg { color: var(--red); font-size: 0.9rem; margin-top: 15px; display: none; font-weight: bold; }
 
         /* --- Header & Layout --- */
+        #mainContent { transition: opacity 0.5s ease; }
         header {
             display: flex; justify-content: space-between; align-items: center; padding: 15px 40px;
             background: rgba(2, 6, 12, 0.8); backdrop-filter: blur(10px); border-bottom: 1px solid var(--glass-border); z-index: 10;
         }
         .h-tools { display: flex; gap: 12px; align-items: center; }
+        
+        /* Logout Button Styles */
+        .logout-btn {
+            width: 40px; height: 40px; border: 1px solid rgba(255, 42, 42, 0.3); display: flex; justify-content: center; align-items: center;
+            cursor: pointer; color: var(--red); transition: all 0.3s ease; background: rgba(255, 42, 42, 0.05); border-radius: 4px; font-size: 1.1rem;
+        }
+        .logout-btn:hover {
+            background: var(--red); color: #000; border-color: var(--red);
+            box-shadow: 0 0 15px rgba(255, 42, 42, 0.6); transform: scale(1.08);
+        }
+
         .lang-btn {
             width: 40px; height: 40px; border: 1px solid var(--glass-border); display: flex; justify-content: center; align-items: center;
-            cursor: pointer; font-weight: bold; font-family: var(--font-en); color: var(--text-muted); transition: 0.3s;
+            cursor: pointer; font-weight: bold; font-family: var(--font-en); color: var(--text-muted); transition: 0.3s; border-radius: 4px;
         }
         .lang-btn:hover { border-color: var(--cyan); color: var(--cyan); background: var(--cyan-dim); }
         .user-panel { display: flex; align-items: center; gap: 10px; border: 1px solid var(--glass-border); padding: 5px 20px; border-radius: 4px; background: rgba(0,0,0,0.3); }
@@ -152,12 +162,15 @@
         
         .gen-input { width: 100%; padding: 10px; background: #000; border: 1px solid var(--glass-border); color: #fff; margin-bottom: 8px; outline: none; transition: 0.3s; font-family: var(--font-ar);}
         .gen-input:focus { border-color: var(--cyan); }
+        select.gen-input { appearance: none; cursor: pointer; }
+        select.gen-input option { background: #000; color: #fff; }
         
         .file-input-wrapper { position: relative; margin-bottom: 8px; }
         .file-input-wrapper input[type="file"] {
             width: 100%; padding: 10px; background: rgba(0, 234, 255, 0.05); border: 1px dashed var(--cyan); color: var(--text-muted);
             border-radius: 4px; cursor: pointer; transition: 0.3s; font-family: var(--font-ar);
         }
+        .red-zone-file input[type="file"] { border-color: var(--red); background: rgba(255, 42, 42, 0.05); }
         
         /* Table Styles */
         .tasks-container { max-height: 250px; overflow-y: auto; margin-bottom: 15px; border: 1px solid var(--glass-border); }
@@ -185,7 +198,7 @@
         .close-btn { width: 100%; background: transparent; border: 1px solid #333; color: #888; padding: 10px; margin-top: 5px; cursor: pointer; }
         .close-btn:hover { border-color: var(--red); color: var(--red); }
         
-        /* Video & Crypto Grid */
+        /* Video Grid */
         .video-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 15px; max-height: 350px; overflow-y: auto; }
         .video-card { background: rgba(0, 0, 0, 0.6); border: 1px solid var(--glass-border); border-radius: 8px; padding: 10px; position: relative; }
         .video-card-title { color: var(--cyan); font-weight: bold; font-size: 0.85rem; margin-bottom: 10px; text-align: center; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
@@ -204,6 +217,7 @@
 <body id="appBody">
 
     <div id="star-bg"></div>
+    <script src="config.js"></script>
     <script>
         const starContainer = document.getElementById('star-bg');
         for(let i=0; i<60; i++) {
@@ -226,22 +240,26 @@
                 
                 <div class="inp-group">
                     <i class="fa-solid fa-id-card"></i>
-                    <input type="text" id="userInput" class="login-input" data-i18n-ph="login_ph_id" placeholder="رقم الهوية" autocomplete="off">
+                    <input type="text" id="userInput" class="login-input" data-i18n-ph="login_ph_id" placeholder="اسم المستخدم" autocomplete="off">
                 </div>
                 <div class="inp-group">
                     <i class="fa-solid fa-key"></i>
-                    <input type="password" id="passInput" class="login-input" data-i18n-ph="login_ph_pass" placeholder="رمز الوصول" autocomplete="off">
+                    <input type="password" id="passInput" class="login-input" data-i18n-ph="login_ph_pass" placeholder="كلمة المرور" autocomplete="off">
                 </div>
 
-                <button class="login-btn" onclick="login()" data-i18n="login_btn">تهيئة الدخول</button>
-                <div class="error-msg" id="loginError" data-i18n="login_err">صلاحية الدخول مرفوضة</div>
+                <button class="login-btn" onclick="login()" data-i18n="login_btn">تسجيل الدخول</button>
+                <div class="error-msg" id="loginError" data-i18n="login_err">بيانات الدخول غير صحيحة</div>
             </div>
         </div>
     </div>
 
-    <div id="mainContent" style="display:none; height: 100%; flex-direction: column;">
+    <div id="mainContent" style="display:none; height: 100%; flex-direction: column; opacity: 1;">
         <header>
             <div class="h-tools">
+                <div class="logout-btn" onclick="logout()" data-i18n-title="title_logout" title="تسجيل الخروج">
+                    <i class="fa-solid fa-power-off"></i>
+                </div>
+                
                 <div class="lang-btn" onclick="toggleLang()" id="langToggle">EN</div>
                 <div class="user-panel">
                     <span id="rankDisp" style="color:var(--cyan); font-size:0.75rem; font-weight:bold; border-inline-end:1px solid #333; padding-inline-end:10px;"></span>
@@ -272,7 +290,7 @@
                 <i class="fa-solid fa-file-contract" style="font-size:2rem; opacity:0.3; color:var(--cyan)"></i>
             </div>
             <div class="stat-card">
-                <div><div class="stat-num" id="stat-usr">0</div><div class="stat-label" data-i18n="st_usr">الأفراد النشطون</div></div>
+                <div><div class="stat-num" id="stat-usr">0</div><div class="stat-label" data-i18n="st_usr">الحسابات المسجلة</div></div>
                 <i class="fa-solid fa-users" style="font-size:2rem; opacity:0.3; color:var(--cyan)"></i>
             </div>
         </div>
@@ -313,14 +331,30 @@
         </div>
     </div>
 
-    <script src="config.js"></script>
     <script>
+        // --- System Hierarchy ---
+        const configOfficers = (typeof OfficerRanks !== 'undefined') ? OfficerRanks : [
+            "Minister of Interior", "Deputy Minister of Interior", "A. Minister of Interior", "Police Commander", 
+            "L.S.P.D Chief", "Deputy L.S.P.D Chief", "Chief of SASP", "Deputy Chief of SASP", "Advisor Chief of SASP", 
+            "Colonel", "Major", "Captain", "First Lieutenant", "Lieutenant"
+        ];
+        
+        const configEnlisted = (typeof EnlistedRanks !== 'undefined') ? EnlistedRanks : 
+                               (typeof IndividualRanks !== 'undefined') ? IndividualRanks : [
+            "Warrant Officer", "Sergeant Major", "Sergeant", "Corporal", "Officer", "Cadet"
+        ];
+
+        const SystemRanks = [...configOfficers, ...configEnlisted];
+        
+        let myRankIdx = 99; 
+        let canManageAccounts = false;
+
         // --- Translations ---
         const i18n = {
             ar: {
-                login_title: "نظام إدارة الشرطة", login_ph_id: "رقم الهوية", login_ph_pass: "رمز الوصول", login_btn: "تهيئة الدخول", login_err: "صلاحية الدخول مرفوضة",
-                status_online: "متصل", app_title: "إدارة <span>الشرطة</span>",
-                st_sys: "سلامة النظام", st_ops: "العمليات النشطة", st_rep: "إجمالي التقارير", st_usr: "الأفراد النشطون",
+                login_title: "نظام إدارة الشرطة", login_ph_id: "اسم المستخدم", login_ph_pass: "كلمة المرور", login_btn: "تسجيل الدخول", login_err: "بيانات الدخول غير صحيحة",
+                status_online: "متصل", app_title: "إدارة <span>الشرطة</span>", title_logout: "تسجيل الخروج من النظام",
+                st_sys: "سلامة النظام", st_ops: "العمليات النشطة", st_rep: "إجمالي التقارير", st_usr: "الحسابات المسجلة",
                 foot_alert: "● تنبيه: المراقبة نشطة", foot_sys: "منظومة إدارة الشرطة v5.0",
                 cryp_title: "قسم التشفير", cryp_ph: "أدخل النص...", cryp_btn_enc: "تشفير النص", cryp_btn_dec: "فك التشفير",
                 btn_add: "إضافة / حفظ السجل", btn_close: "إغلاق النافذة",
@@ -332,19 +366,20 @@
                 m_sav: "التقارير المحفوظة", m_sav_s: "سري للغاية",
                 m_not: "ملاحظات القيادة", m_not_s: "توجيهات عليا",
                 m_map: "خرائط العمليات", m_map_s: "تتبع جغرافي مع صور",
-                m_off: "المسؤولون", m_off_s: "سلسلة القيادة",
+                m_off: "إدارة الحسابات", m_off_s: "الضباط والأفراد",
                 m_wan: "المطلوبون", m_wan_s: "أهداف ذات أولوية",
                 m_tsk: "المهام والنقاط", m_tsk_s: "جدول المهام الميدانية",
                 m_gng: "قسم العصابات", m_gng_s: "شبكات إجرامية",
                 m_vid: "قسم الفيديو", m_vid_s: "مراقبة حية",
                 m_arm: "مستودع الأسلحة", m_arm_s: "العهد والذخائر",
                 v_title: "عنوان الفيديو", v_yt: "رابط يوتيوب", v_or: "أو ملف", v_err: "أدخل العنوان ورابط أو ملف",
-                r_name: "اسمك الكامل", r_badge: "البادج العسكري", r_crim: "اسم المجرم", r_det: "اكتب التقرير بالكامل هنا (مساحة كبيرة)..." // تم إزالة MDT هنا
+                r_name: "اسمك الكامل", r_badge: "البادج العسكري", r_crim: "اسم المجرم", r_det: "اكتب التقرير بالكامل هنا (مساحة كبيرة)...",
+                o_user: "اسم المستخدم", o_pass: "كلمة المرور", o_name: "الاسم الكامل", o_rank: "اختر الرتبة (أقل منك فقط)", o_err: "يرجى تعبئة جميع الحقول", o_exists: "اسم المستخدم مسجل مسبقاً", o_no_perm: "صلاحياتك لا تسمح بإنشاء حسابات (أنت من فئة الأفراد)"
             },
             en: {
-                login_title: "SYSTEM LOGIN", login_ph_id: "ID NUMBER", login_ph_pass: "ACCESS CODE", login_btn: "INITIALIZE", login_err: "UNAUTHORIZED ACCESS",
-                status_online: "ONLINE", app_title: "POLICE <span>DEPT</span>",
-                st_sys: "SYSTEM INTEGRITY", st_ops: "ACTIVE OPS", st_rep: "TOTAL REPORTS", st_usr: "ACTIVE PERSONNEL",
+                login_title: "SYSTEM LOGIN", login_ph_id: "USERNAME", login_ph_pass: "PASSWORD", login_btn: "LOGIN", login_err: "INVALID CREDENTIALS",
+                status_online: "ONLINE", app_title: "POLICE <span>DEPT</span>", title_logout: "System Logout",
+                st_sys: "SYSTEM INTEGRITY", st_ops: "ACTIVE OPS", st_rep: "TOTAL REPORTS", st_usr: "REGISTERED ACCOUNTS",
                 foot_alert: "● ALERT: SURVEILLANCE ACTIVE", foot_sys: "POLICE DEPT SYSTEM V5.0",
                 cryp_title: "CRYPTO DEPT", cryp_ph: "INPUT TEXT...", cryp_btn_enc: "ENCRYPT", cryp_btn_dec: "DECRYPT",
                 btn_add: "SUBMIT RECORD", btn_close: "CLOSE WINDOW",
@@ -356,14 +391,15 @@
                 m_sav: "SAVED REPORTS", m_sav_s: "TOP SECRET",
                 m_not: "COMMAND NOTES", m_not_s: "DIRECTIVES",
                 m_map: "OPS MAPS", m_map_s: "GEO TRACKING & IMAGES",
-                m_off: "OFFICIALS", m_off_s: "COMMAND CHAIN",
+                m_off: "ACCOUNTS MGT", m_off_s: "PERSONNEL DIRECTORY",
                 m_wan: "WANTED", m_wan_s: "HIGH PRIORITY",
                 m_tsk: "TASKS & POINTS", m_tsk_s: "FIELD SCHEDULE",
                 m_gng: "GANGS", m_gng_s: "CRIMINAL NETWORKS",
                 m_vid: "VIDEO DEPT", m_vid_s: "LIVE FEED",
                 m_arm: "ARMORY DEPT", m_arm_s: "WEAPONS & AMMO",
                 v_title: "Video Title", v_yt: "YouTube Link", v_or: "OR File", v_err: "Enter Title and URL or File",
-                r_name: "Full Name", r_badge: "Military Badge", r_crim: "Criminal Name", r_det: "Type the full report here (expandable)..." // Removed MDT
+                r_name: "Full Name", r_badge: "Military Badge", r_crim: "Criminal Name", r_det: "Type the full report here (expandable)...",
+                o_user: "Username", o_pass: "Password", o_name: "Full Name", o_rank: "Select Rank (Lower Only)", o_err: "Please fill all fields", o_exists: "Username already exists", o_no_perm: "Your rank does not permit account creation (Enlisted Status)"
             }
         };
 
@@ -374,8 +410,9 @@
             { id: 'saved', i18n_t: 'm_sav', i18n_s: 'm_sav_s', icon: 'fa-shield-virus', red: false, inputsAr: ['رقم التقرير', 'التصنيف'], inputsEn: ['Report ID', 'Class'] },
             { id: 'notes', i18n_t: 'm_not', i18n_s: 'm_not_s', icon: 'fa-bullhorn', red: false, inputsAr: ['الموضوع', 'النص'], inputsEn: ['Subject', 'Body'] },
             { id: 'maps', i18n_t: 'm_map', i18n_s: 'm_map_s', icon: 'fa-map-location-dot', red: false, hasImage: true, inputsAr: ['الإحداثيات', 'المنطقة'], inputsEn: ['Coords', 'Zone'] },
-            { id: 'officials', i18n_t: 'm_off', i18n_s: 'm_off_s', icon: 'fa-user-tie', red: false, inputsAr: ['الاسم', 'الرتبة'], inputsEn: ['Name', 'Rank'] },
-            { id: 'wanted', i18n_t: 'm_wan', i18n_s: 'm_wan_s', icon: 'fa-skull', red: true, inputsAr: ['اسم الهدف', 'التهمة', 'الخطورة'], inputsEn: ['Name', 'Crime', 'Risk'] },
+            { id: 'officials', i18n_t: 'm_off', i18n_s: 'm_off_s', icon: 'fa-user-tie', red: false, isAccountsForm: true },
+            // تم تفعيل خيار الصورة لقسم المطلوبين
+            { id: 'wanted', i18n_t: 'm_wan', i18n_s: 'm_wan_s', icon: 'fa-skull', red: true, hasImage: true, inputsAr: ['اسم الهدف', 'التهمة', 'الخطورة'], inputsEn: ['Name', 'Crime', 'Risk'] },
             { id: 'tasks', i18n_t: 'm_tsk', i18n_s: 'm_tsk_s', icon: 'fa-crosshairs', red: false, isTable: true },
             { id: 'gangs', i18n_t: 'm_gng', i18n_s: 'm_gng_s', icon: 'fa-mask', red: true, inputsAr: ['الاسم', 'النشاط'], inputsEn: ['Name', 'Activity'] },
             { id: 'video', i18n_t: 'm_vid', i18n_s: 'm_vid_s', icon: 'fa-video', red: false, isVideo: true },
@@ -392,6 +429,8 @@
         function applyLanguage() {
             document.querySelectorAll('[data-i18n]').forEach(el => { if(i18n[currentLang][el.getAttribute('data-i18n')]) el.innerHTML = i18n[currentLang][el.getAttribute('data-i18n')]; });
             document.querySelectorAll('[data-i18n-ph]').forEach(el => { if(i18n[currentLang][el.getAttribute('data-i18n-ph')]) el.placeholder = i18n[currentLang][el.getAttribute('data-i18n-ph')]; });
+            document.querySelectorAll('[data-i18n-title]').forEach(el => { if(i18n[currentLang][el.getAttribute('data-i18n-title')]) el.title = i18n[currentLang][el.getAttribute('data-i18n-title')]; });
+            
             document.getElementById('appBody').setAttribute('dir', currentLang === 'ar' ? 'rtl' : 'ltr');
             document.getElementById('appBody').style.fontFamily = currentLang === 'ar' ? 'var(--font-ar)' : 'var(--font-en)';
             document.getElementById('langToggle').innerText = currentLang === 'ar' ? 'EN' : 'عربي';
@@ -401,24 +440,56 @@
 
         function login() {
             const u = document.getElementById('userInput').value, p = document.getElementById('passInput').value;
-            if(typeof SystemConfig !== 'undefined' && u === SystemConfig.username && p === SystemConfig.password) {
+            let users = JSON.parse(localStorage.getItem('lspd_sys_users')) || [];
+            
+            if(users.length === 0 && typeof SystemConfig !== 'undefined') {
+                users.push({ user: SystemConfig.username, pass: SystemConfig.password, name: SystemConfig.fullName, rank: SystemConfig.rank });
+                localStorage.setItem('lspd_sys_users', JSON.stringify(users));
+            }
+
+            let foundUser = users.find(x => x.user === u && x.pass === p);
+            
+            if(foundUser) {
                 const ls = document.getElementById('loginScreen'); ls.style.opacity = '0';
                 setTimeout(() => {
                     ls.style.display = 'none'; document.getElementById('mainContent').style.display = 'flex';
-                    document.getElementById('nameDisp').innerText = SystemConfig.fullName; document.getElementById('rankDisp').innerText = SystemConfig.rank;
-                    if(typeof OfficerRanks !== 'undefined') {
-                        const r = OfficerRanks.indexOf(SystemConfig.rank);
-                        if(r !== -1) { isOfficer = true; if(r >= 0 && r <= 8) isHighCommand = true; }
-                    }
+                    setTimeout(() => document.getElementById('mainContent').style.opacity = '1', 50);
+
+                    document.getElementById('nameDisp').innerText = foundUser.name; 
+                    document.getElementById('rankDisp').innerText = foundUser.rank;
+                    
+                    myRankIdx = SystemRanks.indexOf(foundUser.rank);
+                    if(myRankIdx === -1) myRankIdx = SystemRanks.length - 1; 
+                    
+                    isOfficer = true; 
+                    canManageAccounts = configOfficers.includes(foundUser.rank); 
+                    isHighCommand = (myRankIdx >= 0 && myRankIdx <= 8); 
+
                     renderModules();
                 }, 500);
-            } else { document.getElementById('loginError').style.display = 'block'; }
+            } else { 
+                document.getElementById('loginError').style.display = 'block'; 
+            }
+        }
+
+        function logout() {
+            const main = document.getElementById('mainContent');
+            const login = document.getElementById('loginScreen');
+            main.style.opacity = '0';
+            setTimeout(() => {
+                main.style.display = 'none'; login.style.display = 'flex';
+                setTimeout(() => login.style.opacity = '1', 50);
+                document.getElementById('userInput').value = ''; document.getElementById('passInput').value = '';
+                document.getElementById('loginError').style.display = 'none'; closeModals();
+            }, 500);
         }
 
         function renderModules() {
             const c = document.getElementById('modulesContainer'); c.innerHTML = ''; 
             modules.forEach((m, idx) => {
-                const cnt = db[m.id].length;
+                let cnt = db[m.id].length;
+                if(m.id === 'officials') cnt = (JSON.parse(localStorage.getItem('lspd_sys_users')) || []).length;
+                
                 c.innerHTML += `
                     <div class="card ${m.red ? 'red-zone' : ''}" onclick="openMod('${m.id}')" style="animation-delay:${idx*0.05}s">
                         <div class="c-val" id="cnt-${m.id}">${cnt}</div>
@@ -439,25 +510,46 @@
             
             const dynamicArea = document.getElementById('dynamicContentArea'), inpArea = document.getElementById('mInputs'), submitBtn = document.getElementById('submitBtn');
             
-            if(currentModule.isReportForm) {
+            if(currentModule.isAccountsForm) {
+                dynamicArea.innerHTML = `<div class="rec-list" id="mList"></div>`;
+                if(canManageAccounts) { 
+                    const t = i18n[currentLang];
+                    let rankOptions = '';
+                    SystemRanks.forEach((r, idx) => {
+                        if(idx > myRankIdx) {
+                            let prefix = configOfficers.includes(r) ? (currentLang === 'ar' ? 'ضابط' : 'Officer') : (currentLang === 'ar' ? 'فرد' : 'Enlisted');
+                            rankOptions += `<option value="${r}">[${prefix}] ${r}</option>`;
+                        }
+                    });
+                    submitBtn.style.display = 'block';
+                    inpArea.innerHTML = `
+                        <div class="grid-inputs-tasks">
+                            <input type="text" id="o-user" class="gen-input" placeholder="${t.o_user}" autocomplete="off">
+                            <input type="text" id="o-pass" class="gen-input" placeholder="${t.o_pass}" autocomplete="off">
+                            <input type="text" id="o-name" class="gen-input" placeholder="${t.o_name}" autocomplete="off">
+                            <select id="o-rank" class="gen-input">
+                                <option value="" disabled selected>${t.o_rank}</option>
+                                ${rankOptions}
+                            </select>
+                        </div>`;
+                } else { 
+                    submitBtn.style.display = 'none'; 
+                    inpArea.innerHTML = `<div style="color:var(--yellow); text-align:center; padding:15px; font-weight:bold; background:rgba(255,193,7,0.1); border:1px solid var(--yellow); border-radius:4px; margin-bottom:10px;">${i18n[currentLang].o_no_perm}</div>`; 
+                }
+                renderAccounts();
+                
+            } else if(currentModule.isReportForm) {
                 dynamicArea.innerHTML = `<div class="rec-list" id="mList"></div>`;
                 if(isOfficer) {
-                    submitBtn.style.display = 'block';
-                    const t = i18n[currentLang];
-                    
-                    // تم إزالة حقل MDT وتعديل التصميم ليتناسب مع 3 حقول فقط
+                    submitBtn.style.display = 'block'; const t = i18n[currentLang];
                     inpArea.innerHTML = `
                         <div class="grid-inputs-tasks">
                             <input type="text" id="r-name" class="gen-input" placeholder="${t.r_name}">
                             <input type="text" id="r-badge" class="gen-input" placeholder="${t.r_badge}">
                         </div>
                         <input type="text" id="r-crim" class="gen-input" placeholder="${t.r_crim}" style="width:100%; margin-bottom:8px;">
-                        
                         <textarea id="r-details" class="gen-input full-width" placeholder="${t.r_det}" style="height:120px; resize:vertical; line-height:1.5;"></textarea>
-                        <div class="file-input-wrapper">
-                            <input type="file" id="r-image" accept="image/*">
-                        </div>
-                    `;
+                        <div class="file-input-wrapper"><input type="file" id="r-image" accept="image/*"></div>`;
                 } else { submitBtn.style.display = 'none'; inpArea.innerHTML = ''; }
                 renderRecords();
                 
@@ -491,19 +583,32 @@
                 submitBtn.style.display = 'block'; dynamicArea.innerHTML = `<div class="rec-list" id="mList"></div>`; inpArea.innerHTML = '';
                 const arr = currentLang === 'ar' ? currentModule.inputsAr : currentModule.inputsEn;
                 arr.forEach((ph, i) => { inpArea.innerHTML += `<input type="text" id="inp-${i}" class="gen-input" placeholder="${ph}" autocomplete="off">`; });
-                if(currentModule.hasImage) inpArea.innerHTML += `<div class="file-input-wrapper"><input type="file" id="inp-image" accept="image/*"></div>`;
+                if(currentModule.hasImage) inpArea.innerHTML += `<div class="file-input-wrapper ${currentModule.red ? 'red-zone-file' : ''}"><input type="file" id="inp-image" accept="image/*"></div>`;
                 renderRecords();
             }
         }
 
         function closeModals() { document.getElementById('cryptoModal').style.display = 'none'; document.getElementById('dataModal').style.display = 'none'; }
 
+        function renderAccounts() {
+            const list = document.getElementById('mList'); if(!list) return;
+            list.innerHTML = '';
+            let users = JSON.parse(localStorage.getItem('lspd_sys_users')) || [];
+            
+            users.forEach((u, idx) => {
+                let uRankIdx = SystemRanks.indexOf(u.rank);
+                let rankColor = configOfficers.includes(u.rank) ? 'var(--cyan)' : 'var(--text-muted)'; 
+                const del = (canManageAccounts && myRankIdx < uRankIdx) ? `<div style="display:flex; align-items:flex-start; margin-inline-start:10px;"><i class="fa-solid fa-trash action-icon icon-del" onclick="delAccount(${idx})"></i></div>` : '';
+                list.innerHTML += `<div class="rec-item"><div style="flex:1; display:flex; flex-direction:column; justify-content:center;"><div style="font-size:1.05rem; font-weight:bold;"><span style="color:${rankColor}">[${u.rank}]</span> ${u.name}</div><div style="font-size:0.8rem; color:#888; margin-top:3px;"><i class="fa-solid fa-user"></i> ${u.user} <span style="margin:0 8px;">|</span> <i class="fa-solid fa-key"></i> ${u.pass}</div></div>${del}</div>`;
+            });
+        }
+
         function renderVideoGrid() {
             const container = document.getElementById('videoGridContainer'); if(!container) return;
             let html = '';
             db['video'].forEach((vid, idx) => {
                 const media = vid.type === 'yt' ? `<iframe class="video-player" src="${vid.url}" frameborder="0" allowfullscreen></iframe>` : `<video class="video-player" src="${vid.url}" controls></video>`;
-                const delBtn = isOfficer ? `<button class="del-video-btn" onclick="delRec(${idx})"><i class="fa-solid fa-trash"></i></button>` : '';
+                const delBtn = canManageAccounts ? `<button class="del-video-btn" onclick="delRec(${idx})"><i class="fa-solid fa-trash"></i></button>` : '';
                 html += `<div class="video-card">${delBtn}<div class="video-card-title" title="${vid.title}">${vid.title}</div>${media}</div>`;
             });
             container.innerHTML = html;
@@ -529,43 +634,35 @@
             const list = document.getElementById('mList'); if(!list) return;
             list.innerHTML = '';
             db[currentModule.id].forEach((rec, idx) => {
-                const del = isOfficer ? `<div style="display:flex; align-items:flex-start; margin-inline-start:10px;"><i class="fa-solid fa-trash action-icon icon-del" onclick="delRec(${idx})"></i></div>` : '';
+                const del = canManageAccounts ? `<div style="display:flex; align-items:flex-start; margin-inline-start:10px;"><i class="fa-solid fa-trash action-icon icon-del" onclick="delRec(${idx})"></i></div>` : '';
                 list.innerHTML += `<div class="rec-item"><div style="flex:1; display:flex; flex-direction:column; justify-content:center;">${rec}</div>${del}</div>`;
             });
         }
 
         function addRecord() {
-            if(currentModule.isReportForm) {
+            if(currentModule.isAccountsForm) {
+                if(!canManageAccounts) return; 
+                const u = document.getElementById('o-user').value, p = document.getElementById('o-pass').value, n = document.getElementById('o-name').value, r = document.getElementById('o-rank').value;
+                if(!u || !p || !n || !r) { alert(i18n[currentLang]['o_err']); return; }
+                let users = JSON.parse(localStorage.getItem('lspd_sys_users')) || [];
+                if(users.some(x => x.user === u)) { alert(i18n[currentLang]['o_exists']); return; }
+                users.push({ user: u, pass: p, name: n, rank: r });
+                localStorage.setItem('lspd_sys_users', JSON.stringify(users));
+                ['o-user','o-pass','o-name','o-rank'].forEach(id => document.getElementById(id).value = '');
+                document.getElementById('cnt-officials').innerText = users.length; renderAccounts(); updateStats();
+
+            } else if(currentModule.isReportForm) {
                 if(!isOfficer) return;
-                
-                // تم إزالة متغير m الخاص بالـ MDT
                 const n = document.getElementById('r-name').value, b = document.getElementById('r-badge').value, c = document.getElementById('r-crim').value, d = document.getElementById('r-details').value;
                 const fileInput = document.getElementById('r-image');
-                
                 if(!n || !b || !c || !d) { alert(currentLang === 'ar' ? 'يرجى تعبئة الحقول الأساسية للتقرير' : 'Please fill core report fields'); return; }
-
                 const processReport = (imgSrc) => {
                     const imgHtml = imgSrc ? `<img src="${imgSrc}" style="width:120px; border-radius:4px; margin-top:10px; cursor:zoom-in; border:1px solid var(--cyan);" onclick="window.open('${imgSrc}')">` : '';
-                    
-                    // تم إزالة جزء رابط MDT من العرض
-                    const html = `
-                        <div style="width:100%; text-align:start; padding:5px;">
-                            <div style="font-size:1.1rem; font-weight:bold; color:var(--yellow); margin-bottom:5px;">[${b}] ${n} <span style="color:#666; font-size:0.9rem; margin:0 10px;">ضد</span> <i class="fa-solid fa-handcuffs" style="color:var(--red);"></i> ${c}</div>
-                            <div style="font-size:0.85rem; color:#ddd; white-space:pre-wrap; background:rgba(0,0,0,0.4); padding:10px; border-radius:4px; border:1px solid #222; line-height:1.6; margin-top:10px;">${d}</div>
-                            ${imgHtml}
-                        </div>`;
-                    db['reports'].push(html);
-                    document.getElementById('cnt-reports').innerText = db['reports'].length;
-                    
-                    // تم إزالة حقل r-mdt من عملية التصفير
-                    ['r-name','r-badge','r-crim','r-details'].forEach(id => document.getElementById(id).value = '');
-                    if(fileInput) fileInput.value = '';
-                    renderRecords(); updateStats();
+                    const html = `<div style="width:100%; text-align:start; padding:5px;"><div style="font-size:1.1rem; font-weight:bold; color:var(--yellow); margin-bottom:5px;">[${b}] ${n} <span style="color:#666; font-size:0.9rem; margin:0 10px;">ضد</span> <i class="fa-solid fa-handcuffs" style="color:var(--red);"></i> ${c}</div><div style="font-size:0.85rem; color:#ddd; white-space:pre-wrap; background:rgba(0,0,0,0.4); padding:10px; border-radius:4px; border:1px solid #222; line-height:1.6; margin-top:10px;">${d}</div>${imgHtml}</div>`;
+                    db['reports'].push(html); document.getElementById('cnt-reports').innerText = db['reports'].length;
+                    ['r-name','r-badge','r-crim','r-details'].forEach(id => document.getElementById(id).value = ''); if(fileInput) fileInput.value = ''; renderRecords(); updateStats();
                 };
-
-                if (fileInput && fileInput.files && fileInput.files[0]) {
-                    const r = new FileReader(); r.onload = e => processReport(e.target.result); r.readAsDataURL(fileInput.files[0]);
-                } else processReport(null);
+                if (fileInput && fileInput.files && fileInput.files[0]) { const r = new FileReader(); r.onload = e => processReport(e.target.result); r.readAsDataURL(fileInput.files[0]); } else processReport(null);
                 
             } else if(currentModule.isVideo) {
                 if(!isOfficer) return;
@@ -574,12 +671,8 @@
                 if(yt) {
                     const ytid = (yt.match(/^(?:https?:\/\/)?(?:www\.)?(?:youtu\.be\/|youtube\.com\/(?:embed\/|v\/|watch\?v=|watch\?.+&v=))((\w|-){11})(?:\S+)?$/)) ? RegExp.$1 : false;
                     if(ytid) db['video'].push({ type: 'yt', url: `https://www.youtube.com/embed/${ytid}`, title: t }); else { alert('Invalid Link'); return; }
-                } else if(fileIn.files && fileIn.files[0]) db['video'].push({ type: 'local', url: URL.createObjectURL(fileIn.files[0]), title: t });
-                else { alert(i18n[currentLang]['v_err']); return; }
-                
-                document.getElementById(`cnt-video`).innerText = db['video'].length;
-                ['v-title', 'v-yt'].forEach(id => document.getElementById(id).value = ''); fileIn.value = '';
-                renderVideoGrid(); updateStats();
+                } else if(fileIn.files && fileIn.files[0]) db['video'].push({ type: 'local', url: URL.createObjectURL(fileIn.files[0]), title: t }); else { alert(i18n[currentLang]['v_err']); return; }
+                document.getElementById(`cnt-video`).innerText = db['video'].length; ['v-title', 'v-yt'].forEach(id => document.getElementById(id).value = ''); fileIn.value = ''; renderVideoGrid(); updateStats();
                 
             } else if(currentModule.isTable) {
                 if(!isOfficer) return;
@@ -600,20 +693,40 @@
                     if(!fileInput.files || !fileInput.files[0]) { alert('Please upload image'); return; }
                     const reader = new FileReader();
                     reader.onload = function(e) {
-                        const imgHtml = `<img src="${e.target.result}" style="width:65px; height:65px; object-fit:cover; border-radius:4px; border:1px solid var(--cyan); cursor:zoom-in;" onclick="window.open('${e.target.result}')">`;
-                        const infoHtml = `<div style="margin-inline-start:15px; line-height:1.4;"><div style="color:var(--cyan); font-weight:bold; font-size:1rem;">${vals[1]}</div><div style="font-size:0.75rem; color:var(--text-muted);"><i class="fa-solid fa-location-crosshairs"></i> ${vals[0]}</div></div>`;
-                        db[currentModule.id].push(`<div style="display:flex; align-items:center;">${imgHtml} ${infoHtml}</div>`);
+                        // تصميم مخصص للمطلوبين (Mugshot) أو تصميم عادي للخرائط
+                        let textHtml = '';
+                        const titleColor = currentModule.red ? 'var(--red)' : 'var(--cyan)';
+                        const borderColor = currentModule.red ? 'var(--red)' : 'var(--cyan)';
+                        
+                        vals.forEach((v, i) => {
+                            if(i === 0) textHtml += `<div style="font-weight:800; font-size:1.1rem; color:${titleColor}; margin-bottom:5px; text-transform:uppercase;">${v}</div>`;
+                            else textHtml += `<div style="font-size:0.85rem; color:#bbb; margin-bottom:2px;">• ${v}</div>`;
+                        });
+
+                        const imgStyle = currentModule.red 
+                            ? `width:80px; height:100px; object-fit:cover; border-radius:4px; border:2px solid ${borderColor};` // ستايل المطلوبين
+                            : `width:70px; height:70px; object-fit:cover; border-radius:4px; border:1px solid ${borderColor};`; // ستايل الخرائط
+
+                        const imgHtml = `<img src="${e.target.result}" style="${imgStyle} cursor:zoom-in; flex-shrink:0;" onclick="window.open('${e.target.result}')">`;
+                        
+                        db[currentModule.id].push(`<div style="display:flex; align-items:flex-start; padding:5px;">${imgHtml} <div style="margin-inline-start:15px; flex:1; display:flex; flex-direction:column; justify-content:center;">${textHtml}</div></div>`);
                         document.getElementById(`cnt-${currentModule.id}`).innerText = db[currentModule.id].length;
-                        arr.forEach((_, i) => document.getElementById(`inp-${i}`).value = ''); fileInput.value = '';
-                        renderRecords(); updateStats();
+                        arr.forEach((_, i) => document.getElementById(`inp-${i}`).value = ''); fileInput.value = ''; renderRecords(); updateStats();
                     }; reader.readAsDataURL(fileInput.files[0]);
                 } else {
                     db[currentModule.id].push(vals.join(' <span style="color:var(--cyan); margin:0 5px;">|</span> '));
                     document.getElementById(`cnt-${currentModule.id}`).innerText = db[currentModule.id].length;
-                    arr.forEach((_, i) => document.getElementById(`inp-${i}`).value = '');
-                    renderRecords(); updateStats();
+                    arr.forEach((_, i) => document.getElementById(`inp-${i}`).value = ''); renderRecords(); updateStats();
                 }
             }
+        }
+
+        function delAccount(idx) {
+            let users = JSON.parse(localStorage.getItem('lspd_sys_users')) || [];
+            users.splice(idx, 1);
+            localStorage.setItem('lspd_sys_users', JSON.stringify(users));
+            document.getElementById('cnt-officials').innerText = users.length;
+            renderAccounts(); updateStats();
         }
 
         function delRec(idx) { 
@@ -631,9 +744,10 @@
         }
 
         function updateStats() {
+            let userCount = (JSON.parse(localStorage.getItem('lspd_sys_users')) || []).length;
             document.getElementById('stat-ops').innerText = db.wanted.length + db.gangs.length + db.tasks.length;
             document.getElementById('stat-reps').innerText = db.reports.length + db.saved.length + db.armory.length;
-            document.getElementById('stat-usr').innerText = db.officials.length;
+            document.getElementById('stat-usr').innerText = userCount;
         }
     </script>
 </body>
