@@ -14,18 +14,7 @@ const SystemConfig = {
     // غير الرتبة هنا لتجربة صلاحيات الحذف (الضباط يحذفون، الأفراد لا)
     rank: "L.S.P.D Chief" 
 };
-const SystemConfig = {
-    // بيانات تسجيل الدخول
-    username: "Leon Marco",        // اسم المستخدم
-    password: "123",            // كلمة المرور
 
-    // بيانات الملف الشخصي (تظهر في الزاوية العلوية اليسرى)
-    fullName: "معالي ليون ماركو", 
-    
-    // الرتبة الحالية (يجب كتابتها بالضبط كما في القائمة بالأسفل)
-    // غير الرتبة هنا لتجربة صلاحيات الحذف (الضباط يحذفون، الأفراد لا)
-    rank: "L.S.P.D Chief" 
-};
 // قائمة الرتب المصنفة كـ "ضباط" (لهم صلاحية الحذف)
 const OfficerRanks = [
     "Minister of Interior",
@@ -51,5 +40,6 @@ const EnlistedRanks = [
     "Officer II", "Officer I", "Solo Cadet", "Cadet"
 
 ];
+
 
 
