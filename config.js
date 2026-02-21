@@ -12,7 +12,7 @@ const SystemConfig = {
     
     // الرتبة الحالية (يجب كتابتها بالضبط كما في القائمة بالأسفل)
     // غير الرتبة هنا لتجربة صلاحيات الحذف (الضباط يحذفون، الأفراد لا)
-    rank: "L.S.P.D Chief" 
+    rank: "Minister of Interior" 
 };
 
 // قائمة الرتب المصنفة كـ "ضباط" (لهم صلاحية الحذف)
@@ -40,6 +40,7 @@ const EnlistedRanks = [
     "Officer II", "Officer I", "Solo Cadet", "Cadet"
 
 ];
+
 
 
 
