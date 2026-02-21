@@ -1,27 +1,24 @@
-<!DOCTYPE html><!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="ar" dir="rtl">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ادارة الشرطة | L.S.P.D</title>
+    <title>ادارة الشرطة| L.S.P.D</title>
     
     <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;500;700;800&family=Rajdhani:wght@500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     
     <style>
         :root {
-            /* ألوان مطابقة للصورة بالضبط */
-            --bg-deep: #030509;
-            --btn-bg: rgba(20, 26, 40, 0.7);
-            --btn-border: rgba(255, 255, 255, 0.15);
-            --btn-hover-border: rgba(0, 234, 255, 0.6);
-            --btn-hover-bg: linear-gradient(90deg, rgba(0,234,255,0.05), rgba(0,234,255,0.15), rgba(0,234,255,0.05));
+            --bg-deep: #03050a;
+            --btn-bg: rgba(12, 18, 30, 0.6);
+            --btn-border: rgba(255, 255, 255, 0.08);
+            --btn-hover: rgba(255, 255, 255, 0.12);
             --cyan: #00eaff;
             --cyan-glow: rgba(0, 234, 255, 0.5);
             --red: #ff3333;
             --green: #00ff6a;
             --text-main: #ffffff;
-            --text-muted: #8da2b5;
             --font-ar: 'Tajawal', sans-serif;
             --font-en: 'Rajdhani', sans-serif;
         }
@@ -30,99 +27,84 @@
         input, textarea, select, .crypto-res, .rec-item span, .task-table td { user-select: text !important; }
 
         body {
-            background: radial-gradient(circle at center, #0a1120 0%, #030509 100%);
+            background: radial-gradient(circle at center, #080d1a 0%, #020306 100%);
             color: var(--text-main); font-family: var(--font-ar);
             height: 100vh; overflow: hidden; display: flex; flex-direction: column; position: relative;
         }
 
-        /* النجوم في الخلفية */
         #star-bg { position: fixed; inset: 0; z-index: -2; pointer-events: none; }
         .star { position: absolute; width: 2px; height: 2px; background: white; border-radius: 50%; animation: twinkle 5s infinite; opacity: 0; }
         @keyframes twinkle { 0% { opacity: 0; transform: translateY(0); } 50% { opacity: 0.5; } 100% { opacity: 0; transform: translateY(-50px); } }
 
-        /* الشعار المركزي الباهت */
         .central-logo-bg {
             position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%);
-            width: 450px; height: 450px; z-index: -1; opacity: 0.04; pointer-events: none;
+            width: 500px; height: 500px; z-index: -1; opacity: 0.03; pointer-events: none;
             background-image: url('yyW7oBx.jpg'); background-size: cover; background-position: center;
             border-radius: 50%; clip-path: circle(47% at 50% 50%);
         }
 
-        @keyframes slideUpFade { from { opacity: 0; transform: translateY(15px); } to { opacity: 1; transform: translateY(0); } }
-        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
 
         /* --- شاشة الدخول --- */
         #loginScreen {
             position: fixed; inset: 0; background: var(--bg-deep); z-index: 9999;
             display: flex; justify-content: center; align-items: center; transition: opacity 0.5s ease;
         }
-        .login-container { width: 380px; padding: 40px; background: rgba(10, 15, 25, 0.9); border: 1px solid var(--btn-border); border-radius: 12px; text-align: center; backdrop-filter: blur(10px); }
-        .login-logo { width: 90px; height: 90px; margin: 0 auto 20px; background-image: url('yyW7oBx.jpg'); background-size: cover; border-radius: 50%; border: 2px solid var(--cyan); box-shadow: 0 0 20px var(--cyan-glow); }
-        .login-title { font-size: 1.5rem; color: #fff; margin-bottom: 25px; font-weight: bold;}
+        .login-container { width: 380px; padding: 40px; background: rgba(10, 15, 25, 0.9); border: 1px solid var(--btn-border); border-radius: 8px; text-align: center; animation: fadeIn 0.5s ease-out; }
+        .login-logo { width: 80px; height: 80px; margin: 0 auto 20px; background-image: url('yyW7oBx.jpg'); background-size: cover; border-radius: 50%; border: 1px solid var(--cyan); box-shadow: 0 0 15px var(--cyan-glow); }
+        .login-title { font-size: 1.4rem; color: #fff; margin-bottom: 25px; font-weight: bold;}
         .inp-group { position: relative; margin-bottom: 15px; }
         .inp-group i { position: absolute; top: 50%; transform: translateY(-50%); color: var(--cyan); opacity: 0.7; right: 15px; }
-        .login-input { width: 100%; padding: 12px 45px; background: rgba(0,0,0,0.5); border: 1px solid var(--btn-border); color: #fff; outline: none; border-radius: 6px; font-family: var(--font-ar); transition: 0.3s;}
+        .login-input { width: 100%; padding: 12px 45px; background: rgba(0,0,0,0.5); border: 1px solid var(--btn-border); color: #fff; outline: none; border-radius: 4px; font-family: var(--font-ar); transition: 0.3s;}
         .login-input:focus { border-color: var(--cyan); }
-        .login-btn { width: 100%; padding: 12px; margin-top: 10px; background: var(--cyan); border: none; color: #000; font-weight: bold; font-size: 1.1rem; border-radius: 6px; cursor: pointer; transition: 0.3s; }
+        .login-btn { width: 100%; padding: 12px; margin-top: 10px; background: var(--cyan); border: none; color: #000; font-weight: bold; font-size: 1.1rem; border-radius: 4px; cursor: pointer; transition: 0.3s; }
         .login-btn:hover { background: #fff; box-shadow: 0 0 15px var(--cyan-glow); }
         .error-msg { color: var(--red); font-size: 0.9rem; margin-top: 15px; display: none; font-weight: bold; }
 
-        /* --- الهيدر المطابق للصورة --- */
+        /* --- الهيدر --- */
         #mainWrapper { display: none; flex: 1; flex-direction: column; transition: opacity 0.5s ease; height: 100%; }
-        header { display: flex; justify-content: space-between; align-items: center; padding: 25px 40px; z-index: 10; }
+        header { display: flex; justify-content: space-between; align-items: center; padding: 30px 50px; z-index: 10; }
         
-        .header-side { display: flex; gap: 10px; align-items: center; }
-        
+        .header-side { display: flex; gap: 12px; align-items: center; }
         .pill-btn {
-            background: rgba(15, 20, 35, 0.6); border: 1px solid var(--btn-border); padding: 8px 18px; border-radius: 25px;
-            color: #ccc; font-size: 0.85rem; font-weight: bold; display: flex; align-items: center; gap: 8px;
-            cursor: pointer; transition: 0.3s; backdrop-filter: blur(5px);
+            background: rgba(15, 20, 35, 0.4); border: 1px solid rgba(255, 255, 255, 0.05); padding: 8px 20px; border-radius: 20px;
+            color: #bbb; font-size: 0.85rem; font-weight: bold; display: flex; align-items: center; gap: 8px;
+            cursor: pointer; transition: 0.3s;
         }
-        .pill-btn:hover { background: rgba(255,255,255,0.05); border-color: rgba(255,255,255,0.3); color: #fff; }
+        .pill-btn:hover { background: rgba(255, 255, 255, 0.05); border-color: rgba(255, 255, 255, 0.1); color: #fff; }
         
-        .sys-title { font-size: 1rem; font-weight: bold; color: #999; letter-spacing: 1px; }
+        .sys-title { font-size: 1rem; font-weight: bold; color: #888; letter-spacing: 1px; }
 
-        /* --- لوحة التحكم (الشبكة) المطابقة للصورة --- */
-        #dashboardView { flex: 1; display: flex; flex-direction: column; justify-content: center; padding-bottom: 60px; animation: fadeIn 0.4s ease; }
-        .main-grid { 
-            display: grid; grid-template-columns: repeat(3, 1fr); gap: 15px; 
-            width: 75%; max-width: 950px; margin: 0 auto;
-        }
-        .menu-btn {
-            background: var(--btn-bg); border: 1px solid var(--btn-border); border-radius: 12px;
-            padding: 22px 10px; text-align: center; color: #ddd; font-size: 1.05rem; font-weight: bold;
-            cursor: pointer; transition: all 0.3s ease; backdrop-filter: blur(5px);
-        }
-        .menu-btn:hover {
-            background: var(--btn-hover-bg); border-color: var(--btn-hover-border); color: #fff;
-            transform: translateY(-2px); box-shadow: 0 5px 20px rgba(0, 234, 255, 0.1);
-        }
+        /* --- الشبكة الرئيسية --- */
+        #dashboardView { flex: 1; display: flex; align-items: center; justify-content: center; padding-bottom: 50px; animation: fadeIn 0.4s ease; }
+        .main-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; width: 100%; max-width: 850px; }
+        .menu-btn { background: var(--btn-bg); border: 1px solid var(--btn-border); border-radius: 6px; padding: 20px 10px; text-align: center; color: #ddd; font-size: 0.95rem; font-weight: bold; cursor: pointer; transition: all 0.3s ease; animation: fadeIn 0.5s ease-out forwards; }
+        .menu-btn:hover { background: var(--btn-hover); border-color: rgba(255,255,255,0.2); color: #fff; }
 
-        /* --- شاشة القسم (الثانية) - تفتح بدل الشبكة --- */
-        #moduleView { display: none; flex: 1; flex-direction: column; width: 85%; max-width: 1100px; margin: 0 auto; padding-bottom: 80px; animation: slideUpFade 0.4s ease; }
-        .module-header { display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid var(--btn-border); padding-bottom: 15px; margin-bottom: 20px; }
-        .module-title { font-size: 1.5rem; color: var(--cyan); font-weight: bold; }
-        .back-btn { background: transparent; border: 1px solid var(--btn-border); color: #fff; padding: 8px 20px; border-radius: 6px; cursor: pointer; transition: 0.3s; font-family: var(--font-ar); font-weight: bold; }
-        .back-btn:hover { background: rgba(255,255,255,0.05); border-color: #fff; }
+        /* --- شاشة القسم --- */
+        #moduleView { display: none; flex: 1; flex-direction: column; width: 100%; max-width: 1000px; margin: 0 auto; padding: 20px 0 40px; animation: fadeIn 0.3s ease; }
+        .module-header { display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid rgba(255,255,255,0.05); padding-bottom: 15px; margin-bottom: 20px; flex-direction: row-reverse; }
+        .module-title { font-size: 1.4rem; color: var(--cyan); font-weight: bold; margin: 0; }
+        .back-btn { background: transparent; border: 1px solid var(--btn-border); color: #ccc; padding: 8px 25px; border-radius: 4px; cursor: pointer; transition: 0.3s; font-size: 0.9rem; }
+        .back-btn:hover { background: rgba(255,255,255,0.05); border-color: #fff; color: #fff; }
         
-        #dynamicContentArea { flex: 1; overflow-y: auto; margin-bottom: 20px; background: rgba(0,0,0,0.3); border-radius: 8px; padding: 15px; border: 1px solid rgba(255,255,255,0.05); }
-        #dynamicContentArea::-webkit-scrollbar { width: 5px; } #dynamicContentArea::-webkit-scrollbar-thumb { background: var(--cyan); border-radius: 5px; }
+        #dynamicContentArea { flex: 1; overflow-y: auto; margin-bottom: 20px; padding-right: 5px; }
+        #dynamicContentArea::-webkit-scrollbar { width: 4px; } #dynamicContentArea::-webkit-scrollbar-thumb { background: var(--cyan); border-radius: 4px; }
 
-        .input-section { background: var(--btn-bg); border: 1px solid var(--btn-border); padding: 20px; border-radius: 8px; }
-        .gen-input { width: 100%; padding: 12px; background: rgba(0,0,0,0.6); border: 1px solid var(--btn-border); color: #fff; margin-bottom: 10px; border-radius: 6px; outline: none; transition: 0.3s; font-family: var(--font-ar);}
+        .input-section { background: rgba(10, 15, 25, 0.4); border: 1px solid var(--btn-border); padding: 20px; border-radius: 6px; }
+        .gen-input { width: 100%; padding: 12px; background: #03050a; border: 1px solid var(--btn-border); color: #fff; margin-bottom: 10px; border-radius: 4px; outline: none; transition: 0.3s; font-family: var(--font-ar);}
         .gen-input:focus { border-color: var(--cyan); }
         select.gen-input { appearance: none; cursor: pointer; } select.gen-input option { background: #000; color: #fff; }
         .grid-inputs { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
         
-        .file-input-wrapper { position: relative; margin-bottom: 10px; border: 1px dashed var(--btn-border); border-radius: 6px; padding: 15px; text-align: center; background: rgba(0,0,0,0.3); transition: 0.3s; }
+        .file-input-wrapper { position: relative; margin-bottom: 10px; border: 1px dashed var(--btn-border); border-radius: 4px; padding: 15px; text-align: center; background: rgba(0,0,0,0.3); transition: 0.3s; }
         .file-input-wrapper:hover { border-color: var(--cyan); }
-        .file-input-wrapper input[type="file"] { width: 100%; background: transparent; color: var(--text-muted); cursor: pointer; font-family: var(--font-ar); }
+        .file-input-wrapper input[type="file"] { width: 100%; background: transparent; color: #888; cursor: pointer; font-family: var(--font-ar); }
         
-        .submit-btn { width: 100%; padding: 12px; background: var(--cyan); border: none; font-weight: bold; font-size: 1.1rem; border-radius: 6px; cursor: pointer; color: #000; transition: 0.3s;}
+        .submit-btn { width: 100%; padding: 12px; background: var(--cyan); border: none; font-weight: bold; font-size: 1.1rem; border-radius: 4px; cursor: pointer; color: #000; transition: 0.3s;}
         .submit-btn:hover { background: #fff; }
 
-        /* القوائم والجداول في شاشة القسم */
-        .rec-item { padding: 15px; border-bottom: 1px solid rgba(255,255,255,0.05); display: flex; justify-content: space-between; align-items: flex-start; color: #ddd; font-size: 0.95rem; }
+        .rec-item { padding: 15px; border-bottom: 1px solid rgba(255,255,255,0.03); display: flex; justify-content: space-between; align-items: flex-start; color: #ddd; font-size: 0.95rem; }
         .action-icon { cursor: pointer; margin: 0 5px; font-size: 1.1rem; transition: 0.2s; opacity: 0.8;}
         .action-icon:hover { transform: scale(1.2); opacity: 1; }
         .icon-del { color: var(--red); }
@@ -130,25 +112,22 @@
         .task-table { width: 100%; border-collapse: collapse; text-align: center; }
         .task-table th { background: rgba(0,234,255,0.05); color: var(--cyan); padding: 12px; border: 1px solid var(--btn-border); font-weight: bold; position: sticky; top: 0;}
         .task-table td { padding: 10px; border: 1px solid var(--btn-border); color: #ccc; }
-        .badge-pending { background: rgba(255, 193, 7, 0.1); color: var(--yellow); padding: 4px 8px; border-radius: 4px; font-size: 0.8rem; }
-        .badge-approved { background: rgba(0, 255, 106, 0.1); color: var(--green); padding: 4px 8px; border-radius: 4px; font-size: 0.8rem; }
+        .badge-pending { background: rgba(255, 193, 7, 0.1); color: var(--yellow); padding: 4px 8px; border-radius: 4px; font-size: 0.8rem; border: 1px solid var(--yellow);}
+        .badge-approved { background: rgba(0, 255, 106, 0.1); color: var(--green); padding: 4px 8px; border-radius: 4px; font-size: 0.8rem; border: 1px solid var(--green);}
 
         .video-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 15px; }
         .video-card { background: #000; border: 1px solid var(--btn-border); border-radius: 8px; padding: 10px; position: relative; }
         .video-player { width: 100%; aspect-ratio: 16/9; border-radius: 4px; }
         .del-video-btn { position: absolute; top: -10px; left: -10px; background: var(--red); color: #fff; border: none; border-radius: 50%; width: 28px; height: 28px; cursor: pointer; z-index: 10; display:flex; justify-content:center; align-items:center;}
 
-        /* --- شريط الأخبار السفلي المطابق للصورة --- */
+        /* --- شريط الأخبار السفلي --- */
         .news-ticker-container {
             position: fixed; bottom: 20px; left: 50%; transform: translateX(-50%);
-            width: 85%; max-width: 1000px; background: rgba(10, 15, 25, 0.9);
+            width: 85%; max-width: 1000px; background: rgba(10, 15, 25, 0.8);
             border: 1px solid var(--btn-border); border-radius: 30px;
             display: flex; align-items: center; padding: 5px; z-index: 10; backdrop-filter: blur(10px);
         }
-        .news-badge {
-            background: var(--red); color: #fff; padding: 6px 20px; border-radius: 20px;
-            font-weight: bold; font-size: 0.85rem; z-index: 2; display: flex; align-items: center; justify-content: center;
-        }
+        .news-badge { background: var(--red); color: #fff; padding: 6px 20px; border-radius: 20px; font-weight: bold; font-size: 0.85rem; z-index: 2; box-shadow: 0 0 10px rgba(255,51,51,0.5); display: flex; align-items: center; justify-content: center; }
         .news-logo { width: 25px; height: 25px; background-image: url('yyW7oBx.jpg'); background-size: cover; border-radius: 50%; margin: 0 10px; filter: grayscale(1); }
         .news-scroll-wrapper { overflow: hidden; flex: 1; white-space: nowrap; position: relative; }
         .news-scroll { display: inline-block; color: #aaa; font-size: 0.85rem; font-weight: 500; animation: scroll-left 30s linear infinite; }
@@ -162,18 +141,19 @@
         .prof-avatar { width: 120px; height: 120px; background: rgba(255,255,255,0.05); border: 2px solid var(--cyan); border-radius: 50%; margin: 0 auto 20px; display: flex; justify-content: center; align-items: center; font-size: 3.5rem; color: var(--cyan); cursor: pointer; position: relative; overflow: hidden; background-size: cover; background-position: center; transition: 0.3s; }
         .prof-avatar:hover::after { content: '\f030'; font-family: "Font Awesome 6 Free"; font-weight: 900; position: absolute; background: rgba(0,0,0,0.6); inset: 0; display: flex; justify-content: center; align-items: center; font-size: 2rem; color: #fff; }
 
-        /* التكبير */
+        /* التكبير والمودال */
         #imgZoomOverlay { position: fixed; inset: 0; background: rgba(0,0,0,0.95); backdrop-filter: blur(10px); z-index: 99999; display: none; justify-content: center; align-items: center; cursor: zoom-out; }
         #imgZoomOverlay img { max-width: 90%; max-height: 90%; border: 2px solid var(--cyan); border-radius: 6px; box-shadow: 0 0 40px var(--cyan-glow); transform: scale(0.9); transition: 0.3s; }
         #imgZoomOverlay.active img { transform: scale(1); }
         .clickable-img { cursor: zoom-in; transition: 0.3s; border: 1px solid var(--cyan); border-radius: 4px; }
         .clickable-img:hover { filter: brightness(1.2); box-shadow: 0 0 10px var(--cyan-glow); }
-        
         .crypto-area textarea { width: 100%; height: 100px; background: rgba(0,0,0,0.5); border: 1px solid var(--btn-border); border-radius: 4px; color: var(--cyan); padding: 10px; margin-bottom: 10px; outline: none; font-family: monospace; }
         .crypto-res { background: rgba(0,0,0,0.5); border: 1px solid var(--btn-border); border-radius: 4px; padding: 15px; color: #fff; min-height: 50px; font-family: monospace; word-break: break-all; padding-inline-end: 45px; }
     </style>
 </head>
 <body id="appBody">
+
+    <script src="config.js"></script>
 
     <div id="star-bg"></div>
     <div id="imgZoomOverlay" onclick="closeImgZoom()"><img id="zoomedImg" src=""></div>
@@ -196,28 +176,26 @@
         </div>
     </div>
 
-    <div id="mainWrapper" style="display:none;">
-        
+    <div id="mainWrapper">
         <header>
             <div class="header-side">
-                <div class="pill-btn" onclick="logout()" title="تسجيل الخروج"><i class="fa-solid fa-user-xmark" style="color: #666;"></i></div>
-                <div class="pill-btn" onclick="goHome()" title="الرئيسية"><i class="fa-solid fa-house" style="color: #666;"></i></div>
                 <div class="pill-btn" onclick="toggleLang()" id="langToggle">English</div>
+                <div class="pill-btn" onclick="goHome()" title="الرئيسية"><i class="fa-solid fa-house"></i></div>
+                <div class="pill-btn" onclick="logout()" title="تسجيل الخروج"><i class="fa-solid fa-user-xmark"></i></div>
             </div>
             
-            <div class="sys-title" data-i18n="app_title">ادارةالشرطة</div>
+            <div class="sys-title" data-i18n="app_title">ادارة الشرطة</div>
             
             <div class="header-side" style="flex-direction: row-reverse;">
                 <div class="pill-btn" onclick="openProfile()" title="الملف الشخصي">
                     <span id="rankNameDisp">--</span>
-                    <i class="fa-solid fa-id-badge" style="margin-right: 5px; color: #666;"></i>
+                    <i class="fa-solid fa-id-badge" style="margin-right: 5px; color: #888;"></i>
                 </div>
             </div>
         </header>
 
         <div id="dashboardView">
-            <div class="main-grid" id="modulesContainer">
-                </div>
+            <div class="main-grid" id="modulesContainer"></div>
         </div>
 
         <div id="moduleView">
@@ -225,9 +203,7 @@
                 <h2 class="module-title" id="mTitle">--</h2>
                 <button class="back-btn" onclick="goHome()" data-i18n="btn_back">العودة للرئيسية</button>
             </div>
-            
             <div id="dynamicContentArea"></div>
-            
             <div class="input-section">
                 <div id="mInputs"></div>
                 <button class="submit-btn" id="submitBtn" onclick="addRecord()" data-i18n="btn_add">إضافة / حفظ السجل</button>
@@ -242,7 +218,6 @@
                 </div>
                 <h2 style="color:#fff; font-size:1.8rem; margin:0 0 5px;" id="pName">--</h2>
                 <div style="color:var(--cyan); font-family:var(--font-en); font-weight:bold; margin-bottom:20px;" id="pRank">--</div>
-                
                 <div style="display:flex; justify-content:space-between; border-bottom:1px solid #222; padding:10px 0; font-size:0.9rem;">
                     <span data-i18n="st_status">حالة الاتصال</span><span style="color:var(--green)">متصل <i class="fa-solid fa-circle" style="font-size:0.5rem"></i></span>
                 </div>
@@ -250,11 +225,9 @@
                     <span data-i18n="st_sec">التصريح</span><span style="color:var(--cyan)" id="pSec">--</span>
                 </div>
             </div>
-            
             <div class="prof-data">
                 <h3 style="color:var(--cyan); border-bottom:1px solid #222; padding-bottom:10px; margin-bottom:15px;"><i class="fa-solid fa-file-contract"></i> <span data-i18n="my_reps">تقاريري</span></h3>
                 <div id="profReportsList"></div>
-
                 <h3 style="color:var(--cyan); border-bottom:1px solid #222; padding-bottom:10px; margin-bottom:15px; margin-top:20px;"><i class="fa-solid fa-crosshairs"></i> <span data-i18n="my_tasks">مهامي</span></h3>
                 <div id="profTasksList"></div>
             </div>
@@ -268,14 +241,11 @@
                     <span data-i18n="n1">تم إنشاء قسم التشفير المتقدم <i class="fa-solid fa-lock"></i></span>
                     <span data-i18n="n2">إطلاق مميزات متقدمة في قسم الخرائط <i class="fa-solid fa-map"></i></span>
                     <span data-i18n="n3">إضافة طبقات حماية جديدة تعزز أمن الموقع <i class="fa-solid fa-shield"></i></span>
-                    <span data-i18n="n1">تم إنشاء قسم التشفير المتقدم <i class="fa-solid fa-lock"></i></span>
                 </div>
             </div>
         </div>
-
     </div>
 
-    <script src="config.js"></script>
     <script>
         // إعداد النجوم
         const starContainer = document.getElementById('star-bg');
@@ -289,8 +259,9 @@
         function openImgZoom(src) { document.getElementById('zoomedImg').src = src; document.getElementById('imgZoomOverlay').style.display = 'flex'; setTimeout(() => document.getElementById('imgZoomOverlay').classList.add('active'), 10); }
         function closeImgZoom() { document.getElementById('imgZoomOverlay').classList.remove('active'); setTimeout(() => document.getElementById('imgZoomOverlay').style.display = 'none', 300); }
 
-        const configOfficers = ["Minister of Interior", "Police Commander", "L.S.P.D Chief", "Deputy L.S.P.D Chief", "Colonel", "Major", "Captain", "First Lieutenant", "Lieutenant"];
-        const configEnlisted = ["Warrant Officer", "Sergeant Major", "Sergeant", "Corporal", "Officer", "Cadet"];
+        // قراءة الرتب من ملف config.js إذا كانت موجودة، وإلا استخدام الأساسية
+        const configOfficers = (typeof OfficerRanks !== 'undefined') ? OfficerRanks : ["Minister of Interior", "Police Commander", "L.S.P.D Chief", "Deputy L.S.P.D Chief", "Colonel", "Major", "Captain", "First Lieutenant", "Lieutenant"];
+        const configEnlisted = (typeof EnlistedRanks !== 'undefined') ? EnlistedRanks : ["Warrant Officer", "Sergeant Major", "Sergeant", "Corporal", "Officer", "Cadet"];
         const SystemRanks = [...configOfficers, ...configEnlisted];
         
         let myRankIdx = 99; let canManageAccounts = false;
@@ -298,47 +269,43 @@
         const i18n = {
             ar: {
                 login_title: "نظام إدارة الشرطة", login_ph_id: "اسم المستخدم", login_ph_pass: "كلمة المرور", login_btn: "تسجيل الدخول", login_err: "بيانات الدخول غير صحيحة",
-                app_title: "ادارة الشرطة", title_logout: "تسجيل الخروج", news_badge: "خبر عاجل",
+                app_title: "إدارة الشرطة", title_logout: "تسجيل الخروج", news_badge: "خبر عاجل",
                 n1: "تم إنشاء قسم التشفير المتقدم", n2: "إطلاق مميزات متقدمة في قسم الخرائط", n3: "إضافة طبقات حماية جديدة تعزز أمن الموقع",
                 cryp_title: "قسم التشفير", cryp_ph: "أدخل النص...", cryp_btn_enc: "تشفير النص", cryp_btn_dec: "فك التشفير",
                 btn_add: "إضافة / حفظ السجل", btn_back: "العودة للرئيسية",
-                th_officer: "المسؤول", th_assignee: "المستلم", th_pts: "النقاط", th_reason: "السبب/المهمة", th_status: "الحالة", th_act: "إجراء", st_pend: "قيد الانتظار", st_appr: "معتمدة ✔️",
+                th_officer: "المسؤول", th_assignee: "المستلم", th_pts: "النقاط", th_reason: "المهمة الموكلة", th_status: "الحالة", th_act: "إجراء", st_pend: "قيد الانتظار", st_appr: "معتمدة ✔️",
                 m_rep: "التقارير", m_cry: "قسم التشفير", m_box: "الصندوق الاسود", m_sav: "التقارير المحفوظة", m_not: "ملاحظات القيادة",
                 m_map: "خرائط العمليات", m_off: "المسؤولين", m_wan: "المطلوبين", m_tsk: "قسم المهام / النقاط", m_gng: "قسم العصابات", m_vid: "قسم الفيديو", m_arm: "مستودع الأسلحة",
                 v_title: "عنوان الفيديو", v_yt: "رابط يوتيوب", v_or: "أو ملف", v_err: "أدخل العنوان ورابط أو ملف",
-                r_name: "اسمك الكامل", r_badge: "البادج العسكري", r_crim: "نوع التقرير", r_det: "اكتب التقرير بالكامل هنا...",
+                r_name: "الاسم الكامل", r_badge: "البادج العسكري", r_crim: "نوع التقرير", r_det: "اكتب التقرير بالكامل هنا...",
                 o_user: "اسم المستخدم", o_pass: "كلمة المرور", o_name: "الاسم الكامل", o_rank: "اختر الرتبة", o_err: "يرجى تعبئة جميع الحقول", o_exists: "موجود مسبقاً", o_no_perm: "لا تملك الصلاحية",
                 my_reps: "تقاريري المرفوعة", my_tasks: "المهام الموكلة لي", st_status: "حالة الاتصال", st_sec: "التصريح الأمني"
             },
             en: {
                 login_title: "SYSTEM LOGIN", login_ph_id: "USERNAME", login_ph_pass: "PASSWORD", login_btn: "LOGIN", login_err: "INVALID CREDENTIALS",
-                app_title: "BLACK GATE SYSTEM", title_logout: "Logout", news_badge: "BREAKING",
+                app_title: "POLICE DEPARTMENT", title_logout: "Logout", news_badge: "BREAKING",
                 n1: "Advanced Crypto Dept online", n2: "New Ops Maps features deployed", n3: "Security layers enhanced",
                 cryp_title: "CRYPTO DEPT", cryp_ph: "INPUT TEXT...", cryp_btn_enc: "ENCRYPT", cryp_btn_dec: "DECRYPT",
                 btn_add: "SUBMIT", btn_back: "BACK TO MAIN",
                 th_officer: "Officer", th_assignee: "Assignee", th_pts: "Points", th_reason: "Task", th_status: "Status", th_act: "Act", st_pend: "Pending", st_appr: "Approved",
-                m_rep: "Reports", m_cry: "Crypto Dept", m_box: "Black Box", m_sav: "Saved Reports", m_not: "Command Notes", m_map: "Ops Maps", m_off: "Officials", m_wan: "Wanted", m_tsk: "Tasks / Points", m_gng: "Gangs", m_vid: "Video Dept", m_arm: "Armory",
+                m_rep: "Reports", m_cry: "Crypto", m_box: "Black Box", m_sav: "Saved", m_not: "Notes", m_map: "Maps", m_off: "Accounts", m_wan: "Wanted", m_tsk: "Tasks", m_gng: "Gangs", m_vid: "Video", m_arm: "Armory",
                 v_title: "Video Title", v_yt: "YT Link", v_or: "OR File", v_err: "Enter Title & Link",
-                r_name: "Full Name", r_badge: "Badge", r_crim: "Report Type", r_det: "Type report here...",
+                r_name: "Name", r_badge: "Badge", r_crim: "Report Type", r_det: "Report details...",
                 o_user: "User", o_pass: "Pass", o_name: "Name", o_rank: "Rank", o_err: "Fill fields", o_exists: "User exists", o_no_perm: "No permission",
                 my_reps: "My Reports", my_tasks: "My Tasks", st_status: "Status", st_sec: "Security Level"
             }
         };
 
-        // الترتيب مطابق لصورتك من اليمين لليسار في 3 أعمدة
         const modules = [
             { id: 'crypto', i18n_t: 'm_cry', isCrypto: true },
             { id: 'blackbox', i18n_t: 'm_box', inputsAr: ['رقم السجل', 'كود الوصول'], inputsEn: ['Record ID', 'Access Code'] },
             { id: 'reports', i18n_t: 'm_rep', isReportForm: true },
-            
             { id: 'maps', i18n_t: 'm_map', hasImage: true, inputsAr: ['الإحداثيات', 'المنطقة'], inputsEn: ['Coords', 'Zone'] },
             { id: 'notes', i18n_t: 'm_not', inputsAr: ['الموضوع', 'النص'], inputsEn: ['Subject', 'Body'] },
             { id: 'tasks', i18n_t: 'm_tsk', isTable: true },
-            
             { id: 'saved', i18n_t: 'm_sav', inputsAr: ['رقم التقرير', 'التصنيف'], inputsEn: ['Report ID', 'Class'] },
             { id: 'wanted', i18n_t: 'm_wan', hasImage: true, inputsAr: ['اسم الهدف', 'التهمة', 'الخطورة'], inputsEn: ['Name', 'Crime', 'Risk'] },
             { id: 'video', i18n_t: 'm_vid', isVideo: true },
-            
             { id: 'gangs', i18n_t: 'm_gng', inputsAr: ['الاسم', 'النشاط'], inputsEn: ['Name', 'Activity'] },
             { id: 'officials', i18n_t: 'm_off', isAccountsForm: true },
             { id: 'armory', i18n_t: 'm_arm', inputsAr: ['نوع السلاح', 'الرقم التسلسلي', 'المستلم'], inputsEn: ['Weapon Type', 'Serial No', 'Assignee'] }
@@ -361,13 +328,15 @@
         function toggleLang() { currentLang = currentLang === 'ar' ? 'en' : 'ar'; applyLanguage(); if(currentModule && document.getElementById('moduleView').style.display === 'flex') openMod(currentModule.id); }
 
         function login() {
-            const u = document.getElementById('userInput').value, p = document.getElementById('passInput').value;
-            let users = JSON.parse(localStorage.getItem('lspd_sys_users')) || [];
-            if(users.length === 0 && typeof SystemConfig !== 'undefined') {
-                users.push({ user: SystemConfig.username, pass: SystemConfig.password, name: SystemConfig.fullName, rank: SystemConfig.rank });
-                localStorage.setItem('lspd_sys_users', JSON.stringify(users));
-            }
-            let foundUser = users.find(x => x.user === u && x.pass === p);
+            const u = document.getElementById('userInput').value.trim();
+            const p = document.getElementById('passInput').value.trim();
+            
+            // قراءة الحسابات الثابتة من ملف config.js + الحسابات المسجلة بالموقع
+            let configU = (typeof ConfigUsers !== 'undefined') ? ConfigUsers : [];
+            let localUsers = JSON.parse(localStorage.getItem('lspd_sys_users')) || [];
+            let allUsers = [...configU, ...localUsers];
+            
+            let foundUser = allUsers.find(x => x.user === u && x.pass === p);
             
             if(foundUser) {
                 const ls = document.getElementById('loginScreen'); ls.style.opacity = '0';
@@ -387,14 +356,12 @@
 
         function logout() { location.reload(); }
 
-        // التوجيه (العودة للرئيسية)
         function goHome() {
             document.getElementById('moduleView').style.display = 'none';
             document.getElementById('profileView').style.display = 'none';
             document.getElementById('dashboardView').style.display = 'flex';
         }
 
-        // الملف الشخصي
         function openProfile() {
             document.getElementById('dashboardView').style.display = 'none';
             document.getElementById('moduleView').style.display = 'none';
@@ -405,12 +372,10 @@
             document.getElementById('pRank').innerText = isHighCommand ? 'High Command' : 'Officer';
             document.getElementById('pSec').innerText = isHighCommand ? 'Top Secret' : 'Standard';
 
-            // جلب الصورة المحفوظة
             let savedPic = localStorage.getItem('profilePic_' + myName);
             if(savedPic) { document.getElementById('profAvatar').style.backgroundImage = `url(${savedPic})`; document.getElementById('profAvatarIcon').style.display = 'none'; } 
             else { document.getElementById('profAvatar').style.backgroundImage = ''; document.getElementById('profAvatarIcon').style.display = 'block'; }
 
-            // جلب الداتا
             const myReps = db.reports.filter(r => r.includes(myName));
             document.getElementById('profReportsList').innerHTML = myReps.length > 0 ? myReps.map(r => `<div class="rec-item">${r}</div>`).join('') : `<div style="padding:15px; color:#666;">لا توجد تقارير.</div>`;
 
@@ -441,37 +406,30 @@
         function openMod(id) {
             currentModule = modules.find(m => m.id === id);
             
-            // قسم التشفير برمجة خاصة له عشان ما يخرب
-            if(currentModule.isCrypto) {
-                document.getElementById('dashboardView').style.display = 'none';
-                document.getElementById('profileView').style.display = 'none';
-                document.getElementById('moduleView').style.display = 'flex';
-                document.getElementById('mTitle').innerText = i18n[currentLang][currentModule.i18n_t];
-                
-                const t = i18n[currentLang];
-                document.getElementById('dynamicContentArea').innerHTML = `
-                    <div class="crypto-area">
-                        <textarea id="cryIn" placeholder="${t.cryp_ph}"></textarea>
-                        <div style="display:flex; gap:10px; margin-bottom:15px;">
-                            <button class="submit-btn" onclick="doCrypto('enc')">${t.cryp_btn_enc}</button>
-                            <button class="submit-btn" onclick="doCrypto('dec')" style="background:#fff;">${t.cryp_btn_dec}</button>
-                        </div>
-                        <div style="position:relative;">
-                            <div class="crypto-res" id="cryOut"></div>
-                            <i class="fa-solid fa-copy" onclick="copyCrypto()" style="position:absolute; top:50%; transform:translateY(-50%); left:15px; color:var(--cyan); cursor:pointer; font-size:1.2rem;"></i>
-                        </div>
-                    </div>`;
-                document.getElementById('mInputs').innerHTML = '';
-                document.getElementById('submitBtn').style.display = 'none';
-                return;
-            }
-            
             document.getElementById('dashboardView').style.display = 'none';
             document.getElementById('profileView').style.display = 'none';
             document.getElementById('moduleView').style.display = 'flex';
             document.getElementById('mTitle').innerText = i18n[currentLang][currentModule.i18n_t];
             
             const dynamicArea = document.getElementById('dynamicContentArea'), inpArea = document.getElementById('mInputs'), submitBtn = document.getElementById('submitBtn');
+            
+            if(currentModule.isCrypto) {
+                const t = i18n[currentLang];
+                dynamicArea.innerHTML = `
+                    <div style="padding:20px; background:rgba(0,0,0,0.3); border-radius:8px;">
+                        <textarea id="cryIn" class="gen-input" placeholder="${t.cryp_ph}" style="height:120px; resize:vertical;"></textarea>
+                        <div style="display:flex; gap:10px; margin-bottom:15px;">
+                            <button class="submit-btn" onclick="doCrypto('enc')">${t.cryp_btn_enc}</button>
+                            <button class="submit-btn" onclick="doCrypto('dec')" style="background:#fff; color:#000;">${t.cryp_btn_dec}</button>
+                        </div>
+                        <div style="position:relative;">
+                            <div class="gen-input" id="cryOut" style="min-height:60px; word-break:break-all; padding-inline-end:40px;"></div>
+                            <i class="fa-solid fa-copy" onclick="copyCrypto()" style="position:absolute; top:50%; transform:translateY(-50%); left:15px; color:var(--cyan); cursor:pointer; font-size:1.2rem;"></i>
+                        </div>
+                    </div>`;
+                inpArea.innerHTML = ''; submitBtn.style.display = 'none';
+                return;
+            }
             
             if(currentModule.isAccountsForm) {
                 dynamicArea.innerHTML = `<div id="mList"></div>`;
@@ -480,7 +438,7 @@
                     SystemRanks.forEach((r, idx) => { if(idx > myRankIdx) rankOptions += `<option value="${r}">${r}</option>`; });
                     submitBtn.style.display = 'block';
                     inpArea.innerHTML = `<div class="grid-inputs"><input type="text" id="o-user" class="gen-input" placeholder="${t.o_user}" autocomplete="off"><input type="text" id="o-pass" class="gen-input" placeholder="${t.o_pass}" autocomplete="off"><input type="text" id="o-name" class="gen-input" placeholder="${t.o_name}" autocomplete="off"><select id="o-rank" class="gen-input"><option value="" disabled selected>${t.o_rank}</option>${rankOptions}</select></div>`;
-                } else { submitBtn.style.display = 'none'; inpArea.innerHTML = `<div style="color:var(--yellow); text-align:center; padding:15px;">${i18n[currentLang].o_no_perm}</div>`; }
+                } else { submitBtn.style.display = 'none'; inpArea.innerHTML = `<div style="color:var(--yellow); text-align:center; padding:15px; border:1px solid var(--yellow); border-radius:4px; margin-bottom:10px; background:rgba(255,193,7,0.1);">${i18n[currentLang].o_no_perm}</div>`; }
                 renderAccounts();
             } else if(currentModule.isReportForm) {
                 dynamicArea.innerHTML = `<div id="mList"></div>`;
@@ -524,10 +482,19 @@
 
         function renderAccounts() {
             const list = document.getElementById('mList'); if(!list) return; list.innerHTML = '';
+            
+            // جلب الحسابات الثابتة من الكونفق
+            let configU = (typeof ConfigUsers !== 'undefined') ? ConfigUsers : [];
+            configU.forEach((u) => {
+                let rankColor = configOfficers.includes(u.rank) ? 'var(--cyan)' : 'var(--text-muted)'; 
+                list.innerHTML += `<div class="rec-item"><div style="flex:1;"><div style="font-size:1.05rem; font-weight:bold;"><span style="color:${rankColor}">[${u.rank}]</span> ${u.name} <span style="font-size:0.6rem; background:#111; padding:2px 5px; border-radius:4px; color:#888;">أساسي (Config)</span></div><div style="font-size:0.8rem; color:#888;">${u.user} | ${u.pass}</div></div></div>`;
+            });
+
+            // جلب الحسابات المؤقتة
             let users = JSON.parse(localStorage.getItem('lspd_sys_users')) || [];
             users.forEach((u, idx) => {
                 let uRankIdx = SystemRanks.indexOf(u.rank); let rankColor = configOfficers.includes(u.rank) ? 'var(--cyan)' : 'var(--text-muted)'; 
-                const del = (canManageAccounts && myRankIdx < uRankIdx) ? `<i class="fa-solid fa-trash action-icon icon-del" onclick="delRec(${idx})"></i>` : '';
+                const del = (canManageAccounts && myRankIdx < uRankIdx) ? `<i class="fa-solid fa-trash action-icon icon-del" onclick="delAccount(${idx})"></i>` : '';
                 list.innerHTML += `<div class="rec-item"><div style="flex:1;"><div style="font-size:1.05rem; font-weight:bold;"><span style="color:${rankColor}">[${u.rank}]</span> ${u.name}</div><div style="font-size:0.8rem; color:#888;">${u.user} | ${u.pass}</div></div>${del}</div>`;
             });
         }
@@ -564,11 +531,14 @@
         function addRecord() {
             if(currentModule.isAccountsForm) {
                 if(!canManageAccounts) return; 
-                const u = document.getElementById('o-user').value, p = document.getElementById('o-pass').value, n = document.getElementById('o-name').value, r = document.getElementById('o-rank').value;
+                const u = document.getElementById('o-user').value.trim(), p = document.getElementById('o-pass').value.trim(), n = document.getElementById('o-name').value.trim(), r = document.getElementById('o-rank').value;
                 if(!u || !p || !n || !r) { alert(i18n[currentLang]['o_err']); return; }
-                let users = JSON.parse(localStorage.getItem('lspd_sys_users')) || [];
-                if(users.some(x => x.user === u)) { alert(i18n[currentLang]['o_exists']); return; }
-                users.push({ user: u, pass: p, name: n, rank: r }); localStorage.setItem('lspd_sys_users', JSON.stringify(users));
+                
+                let configU = (typeof ConfigUsers !== 'undefined') ? ConfigUsers : [];
+                let localUsers = JSON.parse(localStorage.getItem('lspd_sys_users')) || [];
+                if(configU.some(x => x.user === u) || localUsers.some(x => x.user === u)) { alert(i18n[currentLang]['o_exists']); return; }
+                
+                localUsers.push({ user: u, pass: p, name: n, rank: r }); localStorage.setItem('lspd_sys_users', JSON.stringify(localUsers));
                 ['o-user','o-pass','o-name','o-rank'].forEach(id => document.getElementById(id).value = ''); renderAccounts();
             } else if(currentModule.isReportForm) {
                 const n = document.getElementById('r-name').value, b = document.getElementById('r-badge').value, c = document.getElementById('r-crim').value, d = document.getElementById('r-details').value;
@@ -582,8 +552,8 @@
                     if(fileDatas.length > 0) {
                         filesHtml += '<div style="display:flex; gap:10px; flex-wrap:wrap; margin-top:10px;">';
                         fileDatas.forEach(fd => {
-                            if(fd.isImg) filesHtml += `<img src="${fd.src}" class="clickable-img" style="width:80px; height:80px; object-fit:cover; border-radius:4px;" onclick="openImgZoom('${fd.src}')">`;
-                            else filesHtml += `<a href="${fd.src}" download="${fd.name}" style="display:flex; flex-direction:column; align-items:center; justify-content:center; width:80px; height:80px; background:rgba(0,0,0,0.5); border:1px solid var(--cyan); color:var(--cyan); border-radius:4px; text-decoration:none; font-size:0.7rem; text-align:center; padding:5px;"><i class="fa-solid fa-file-lines" style="font-size:1.5rem; margin-bottom:5px;"></i></a>`;
+                            if(fd.isImg) filesHtml += `<img src="${fd.src}" class="clickable-img" style="width:80px; height:80px; object-fit:cover; border-radius:4px; border: 1px solid var(--btn-border);" onclick="openImgZoom('${fd.src}')">`;
+                            else filesHtml += `<a href="${fd.src}" download="${fd.name}" style="display:flex; flex-direction:column; align-items:center; justify-content:center; width:80px; height:80px; background:rgba(0,0,0,0.5); border:1px solid var(--btn-border); color:var(--cyan); border-radius:4px; text-decoration:none; font-size:0.7rem; text-align:center; padding:5px;"><i class="fa-solid fa-file-lines" style="font-size:1.5rem; margin-bottom:5px;"></i></a>`;
                         });
                         filesHtml += '</div>';
                     }
@@ -597,7 +567,7 @@
                 if(yt) {
                     let ytid = false; const regExp = /^.*(youtu.be\/|v\/|u\/\w\/|embed\/|watch\?v=|\&v=|\/shorts\/)([^#\&\?]*).*/; const match = yt.match(regExp);
                     if (match && match[2].length === 11) { ytid = match[2]; }
-                    if(ytid) db['video'].push({ type: 'yt', url: `https://www.youtube-nocookie.com/embed/${ytid}?rel=0`, title: t }); else return alert('رابط يوتيوب غير صالح');
+                    if(ytid) db['video'].push({ type: 'yt', url: `https://www.youtube-nocookie.com/embed/${ytid}?rel=0`, title: t }); else return alert(currentLang==='ar'?'رابط يوتيوب غير صالح':'Invalid YT link');
                 } else if(fileIn.files && fileIn.files[0]) db['video'].push({ type: 'local', url: URL.createObjectURL(fileIn.files[0]), title: t }); else return;
                 ['v-title', 'v-yt'].forEach(id => document.getElementById(id).value = ''); fileIn.value = ''; renderVideoGrid();
             } else if(currentModule.isTable) {
@@ -619,7 +589,7 @@
                             if(i === 0) textHtml += `<div style="font-weight:800; font-size:1.1rem; color:var(--cyan); margin-bottom:5px;">${v}</div>`;
                             else textHtml += `<div style="font-size:0.85rem; color:#bbb; margin-bottom:2px;">• ${v}</div>`;
                         });
-                        const imgHtml = `<img src="${e.target.result}" class="clickable-img" style="width:70px; height:70px; object-fit:cover; border-radius:4px;" onclick="openImgZoom('${e.target.result}')">`;
+                        const imgHtml = `<img src="${e.target.result}" class="clickable-img" style="width:70px; height:70px; object-fit:cover; border-radius:4px; border: 1px solid var(--btn-border);" onclick="openImgZoom('${e.target.result}')">`;
                         db[currentModule.id].push(`<div style="display:flex; align-items:flex-start; padding:5px;">${imgHtml} <div style="margin-inline-start:15px; flex:1; display:flex; flex-direction:column; justify-content:center;">${textHtml}</div></div>`);
                         arr.forEach((_, i) => document.getElementById(`inp-${i}`).value = ''); fileInput.value = ''; renderRecords();
                     }; reader.readAsDataURL(fileInput.files[0]);
@@ -631,14 +601,10 @@
         }
 
         function delRec(idx) { 
-            if(currentModule.id === 'officials') {
-                let users = JSON.parse(localStorage.getItem('lspd_sys_users')) || [];
-                users.splice(idx, 1); localStorage.setItem('lspd_sys_users', JSON.stringify(users)); renderAccounts();
-            } else {
-                db[currentModule.id].splice(idx, 1); 
-                if(currentModule.isVideo) renderVideoGrid(); else if(currentModule.isTable) renderTasksTable(); else renderRecords(); 
-            }
+            db[currentModule.id].splice(idx, 1); 
+            if(currentModule.isVideo) renderVideoGrid(); else if(currentModule.isTable) renderTasksTable(); else renderRecords(); 
         }
+        function delAccount(idx) { let users = JSON.parse(localStorage.getItem('lspd_sys_users')) || []; users.splice(idx, 1); localStorage.setItem('lspd_sys_users', JSON.stringify(users)); renderAccounts(); }
         function approveTask(idx) { if(!isHighCommand) return; db['tasks'][idx].approved = true; renderTasksTable(); }
         function doCrypto(type) { const v = document.getElementById('cryIn').value, out = document.getElementById('cryOut'); if(!v) return; try { out.innerText = (type === 'enc') ? btoa(unescape(encodeURIComponent(v))) : decodeURIComponent(escape(atob(v))); } catch(e) { out.innerText = "Error"; } }
         function copyCrypto() { navigator.clipboard.writeText(document.getElementById('cryOut').innerText); }
