@@ -18,6 +18,7 @@ const OfficerRanks = [
     "Cheif of SASP",
     "Deputy Cheif of SASP",
     "Advisor Cheif of SASP",
+    "Cheif of M.I.F",
     "Colonel",
     "Major",
     "Captain",
@@ -38,6 +39,7 @@ const EnlistedRanks = [
     "Solo Cadet", 
     "Cadet"
 ];
+
 
 
 
