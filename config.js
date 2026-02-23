@@ -5,6 +5,7 @@ const ConfigUsers = [
     { user: "fzzzl2", pass: "123", name: "دانيل سميث", rank: "Lieutenant" },
     { user: "Saeed Faiz", pass: "123", name: "سعيد فايز", rank: "Minister of Interior" },
     { user: "9fsl", pass: "123", name: "فيصل بن سلمان", rank: "Minister of Interior" },
+    { user: "ah.46", pass: "123", name: "مشبب العتيبي", rank: "Captain" },
 ];
 
 // رتب الضباط والقيادة العليا - لهم صلاحيات كاملة (إنشاء حسابات، قبول مهام)
@@ -39,6 +40,7 @@ const EnlistedRanks = [
     "Solo Cadet", 
     "Cadet"
 ];
+
 
 
 
