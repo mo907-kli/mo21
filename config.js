@@ -3,8 +3,7 @@ const ConfigUsers = [
     { user: "admin", pass: "123", name: "dev", rank: "Minister of Interior" },
     { user: "2zcp", pass: "123", name: "أحمد الفهد", rank: "Minister of Interior" },
     { user: "fzzzl2", pass: "123", name: "دانيل سميث", rank: "Lieutenant" },
-    { user: "Saeed Faiz", pass: "123", name: "سعيد فايز", rank: "Minister of Interior" },
-    { user: "9fsl", pass: "123", name: "فيصل بن سلمان", rank: "Minister of Interior" },
+    { user: "9fsl", pass: "123", name: "فيصل بن سلمان", rank: "Lieutenantr" },
     { user: "ah.46", pass: "123", name: "مشبب العتيبي", rank: "Captain" },
 ];
 
@@ -40,6 +39,7 @@ const EnlistedRanks = [
     "Solo Cadet", 
     "Cadet"
 ];
+
 
 
 
